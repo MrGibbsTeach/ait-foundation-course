@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIT Foundation Course</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 /* ── VARIABLES ─────────────────────────────────────────────── */
 :root {
@@ -404,6 +405,61 @@ p  { line-height: 1.6; }
   letter-spacing: .07em; color: var(--text-muted); margin: 24px 0 8px 2px;
 }
 
+/* ── LOGIN SCREEN ────────────────────────────────────────────── */
+#screen-login {
+  align-items: center; justify-content: center; text-align: center;
+  padding: 48px 24px;
+  background: linear-gradient(150deg, #0d1b2a 0%, #1a3050 60%, #0f3460 100%);
+  color: #fff;
+}
+.login-card {
+  background: rgba(255,255,255,.08); border-radius: var(--radius);
+  padding: 24px; margin: 16px 0; width: 100%; max-width: 380px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+.login-label { font-size: .88rem; opacity: .75; margin-bottom: 8px; text-align: left; }
+.login-input {
+  width: 100%; padding: 13px 16px; font-size: 1rem; font-family: inherit;
+  border: 2px solid rgba(255,255,255,.25); border-radius: 11px;
+  background: rgba(255,255,255,.1); color: #fff; min-height: var(--tap);
+  margin-bottom: 12px; display: block;
+}
+.login-input::placeholder { color: rgba(255,255,255,.4); }
+.login-input:focus { outline: none; border-color: rgba(255,255,255,.65); background: rgba(255,255,255,.15); }
+.login-error { color: #ffaaaa; font-size: .88rem; margin-top: 8px; min-height: 22px; }
+.login-divider { border: none; border-top: 1px solid rgba(255,255,255,.15); margin: 16px 0; }
+
+/* ── TEACHER PORTAL ──────────────────────────────────────────── */
+#screen-teacher { flex-direction: column; }
+.teacher-hero {
+  background: linear-gradient(150deg, #0d1b2a, #1a3050); color: #fff;
+  padding: 20px 24px 44px; flex-shrink: 0;
+}
+.teacher-hero h1 { font-size: 1.5rem; margin-bottom: 6px; }
+.teacher-hero p  { opacity: .75; font-size: .95rem; }
+.teacher-body { padding: 0 20px 40px; margin-top: -24px; overflow-x: auto; }
+.teacher-table {
+  width: 100%; border-collapse: collapse; font-size: .9rem;
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden; min-width: 600px;
+}
+.teacher-table th {
+  background: #1a3050; color: #fff; padding: 12px 16px;
+  text-align: left; font-size: .8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .04em; white-space: nowrap;
+}
+.teacher-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.teacher-table tr:last-child td { border-bottom: none; }
+.teacher-table tr:hover td { background: #f8fafc; }
+.t-prog-wrap { background: #e8ecf0; border-radius: 10px; height: 6px;
+  overflow: hidden; width: 72px; display: inline-block; vertical-align: middle; margin-right: 6px; }
+.t-prog-bar { height: 100%; border-radius: 10px; background: var(--primary); }
+.teacher-actions { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+.btn-refresh { background: var(--white); border: 2px solid var(--border);
+  border-radius: 10px; padding: 9px 18px; font-size: .9rem; font-weight: 600;
+  color: var(--text); min-height: 40px; }
+.btn-refresh:hover { border-color: var(--primary); color: var(--primary); }
+
 /* ── PRINT ───────────────────────────────────────────────────── */
 @media print {
   .screen { display: none !important; }
@@ -423,13 +479,69 @@ p  { line-height: 1.6; }
 <!-- ═══════════════════════════════════════════════════════════
      WELCOME SCREEN
 ════════════════════════════════════════════════════════════ -->
-<div id="screen-welcome" class="screen active">
+<div id="screen-welcome" class="screen">
   <div class="welcome-logo">💻</div>
   <h1 class="welcome-title">AIT Foundation</h1>
   <p class="welcome-sub">Applied Information Technology · Year 11</p>
   <button class="btn-start" id="btn-start" onclick="nav('course')">Start Learning</button>
-  <p class="welcome-note">Progress saved automatically to this device.</p>
+  <p class="welcome-note" id="welcome-user"></p>
   <button class="btn-text-sm" onclick="confirmReset()">Reset my progress</button>
+  <button class="btn-text-sm" onclick="signOut()" style="margin-top:2px">Sign out</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════════════════════════ -->
+<div id="screen-login" class="screen active">
+  <div class="welcome-logo">💻</div>
+  <h1 class="welcome-title">AIT Foundation</h1>
+  <p class="welcome-sub">Applied Information Technology · Year 11</p>
+
+  <!-- Student login -->
+  <div class="login-card" id="student-section">
+    <p class="login-label">👤 Enter your username</p>
+    <input class="login-input" id="login-username" placeholder="e.g. PurpleFox99"
+      autocomplete="off" autocapitalize="none" spellcheck="false"
+      onkeydown="if(event.key==='Enter')studentLogin()">
+    <button class="btn-start" id="btn-student-login" onclick="studentLogin()" style="width:100%">Enter →</button>
+  </div>
+
+  <p class="login-error" id="login-error"></p>
+
+  <!-- Teacher toggle -->
+  <button class="btn-text-sm" onclick="toggleTeacherLogin()" id="teacher-toggle-btn">Teacher login ›</button>
+
+  <!-- Teacher login (hidden) -->
+  <div class="login-card" id="teacher-section" style="display:none">
+    <p class="login-label">📧 Teacher email</p>
+    <input class="login-input" id="teacher-email" type="email" placeholder="you@school.edu"
+      autocomplete="email" onkeydown="if(event.key==='Enter')teacherLogin()">
+    <p class="login-label">🔑 Password</p>
+    <input class="login-input" id="teacher-password" type="password" placeholder="Password"
+      autocomplete="current-password" onkeydown="if(event.key==='Enter')teacherLogin()">
+    <button class="btn-start" id="btn-teacher-login" onclick="teacherLogin()" style="width:100%">Sign In →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TEACHER PORTAL
+════════════════════════════════════════════════════════════ -->
+<div id="screen-teacher" class="screen">
+  <div class="teacher-hero">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px">
+      <span></span>
+      <button class="hero-back" onclick="signOut()">Sign Out</button>
+    </div>
+    <h1>📊 Teacher Portal</h1>
+    <p>AIT Foundation Course · Student Progress</p>
+  </div>
+  <div class="teacher-body">
+    <div class="teacher-actions">
+      <button class="btn-refresh" onclick="renderTeacherPortal()">↻ Refresh</button>
+      <span id="teacher-status" style="font-size:.85rem;color:var(--text-muted)"></span>
+    </div>
+    <div id="teacher-content"><p style="color:var(--text-muted)">Loading…</p></div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -497,6 +609,15 @@ p  { line-height: 1.6; }
 <div id="confetti-layer"></div>
 
 <script>
+// ══════════════════════════════════════════════════════════════
+// SUPABASE CONFIG  —  paste your project details below
+// ══════════════════════════════════════════════════════════════
+const SUPABASE_URL      = "YOUR_SUPABASE_URL";        // ← e.g. https://xxxx.supabase.co
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";   // ← long string starting with eyJ…
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let currentUser = null;   // set on login, cleared on sign-out
+
 /*
 ╔══════════════════════════════════════════════════════════════╗
 ║  AIT FOUNDATION COURSE  —  index.html                       ║
@@ -1955,6 +2076,11 @@ let P = {};  // live progress object
 
 function loadProgress() {
   try { P = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { P = {}; }
+  initProgressStructure();
+}
+
+// Called after P is set (either from localStorage or cloud)
+function initProgressStructure() {
   COURSE_DATA.units.forEach(unit => {
     if (unit.status !== "available") return;
     P[unit.id] = P[unit.id] || { modules: {} };
@@ -1978,11 +2104,25 @@ function loadProgress() {
 
 function saveProgress() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(P)); } catch {}
+  syncProgressToCloud(); // fire-and-forget
 }
 
-function confirmReset() {
+async function syncProgressToCloud() {
+  if (!currentUser) return;
+  try {
+    await sb.from("progress").upsert(
+      { student_id: currentUser.id, data: P, updated_at: new Date().toISOString() },
+      { onConflict: "student_id" }
+    );
+  } catch {}
+}
+
+async function confirmReset() {
   if (!confirm("Reset all progress? This cannot be undone.")) return;
   localStorage.removeItem(STORAGE_KEY);
+  if (currentUser) {
+    try { await sb.from("progress").delete().eq("student_id", currentUser.id); } catch {}
+  }
   P = {};
   loadProgress();
   nav("welcome");
@@ -2042,6 +2182,189 @@ function markLessonComplete(unitId, modId, lesId, stars) {
 }
 
 // ──────────────────────────────────────────────────────────────
+// AUTH — STUDENT + TEACHER LOGIN / LOGOUT
+// ──────────────────────────────────────────────────────────────
+async function studentLogin() {
+  const raw = (document.getElementById("login-username").value || "").trim();
+  if (!raw) return setLoginError("Please enter your username.");
+  const username = raw.toLowerCase().replace(/[^a-z0-9_-]/g, "");
+  if (!username) return setLoginError("Username can only contain letters, numbers, - and _");
+
+  setLoginBusy(true, "student");
+  const email = username + "@aitcourse";
+  const pass  = username;
+
+  // Try sign-in first; if no account exists, create one
+  let { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error?.message?.includes("Invalid login")) {
+    ({ data, error } = await sb.auth.signUp({
+      email, password: pass,
+      options: { data: { username: raw } }
+    }));
+    // signUp may return session immediately (email confirm disabled) or null
+    if (!error && !data.session) {
+      // Email confirmation is on — ask user to disable it in Supabase dashboard
+      setLoginError("Account created! Ask your teacher to disable email confirmation in Supabase.");
+      setLoginBusy(false, "student"); return;
+    }
+  }
+
+  if (error) { setLoginError(error.message); setLoginBusy(false, "student"); return; }
+
+  currentUser = data.user ?? data.session?.user;
+  await initWithCloudProgress();
+  updateWelcomeScreen();
+  setLoginBusy(false, "student");
+  nav("welcome");
+}
+
+async function teacherLogin() {
+  const email = (document.getElementById("teacher-email").value || "").trim();
+  const pass  = (document.getElementById("teacher-password").value || "");
+  if (!email || !pass) return setLoginError("Enter your email and password.");
+
+  setLoginBusy(true, "teacher");
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+  if (error) { setLoginError(error.message); setLoginBusy(false, "teacher"); return; }
+
+  currentUser = data.user;
+
+  // Check role in profiles table
+  const { data: profile } = await sb.from("profiles")
+    .select("role").eq("id", currentUser.id).single();
+
+  setLoginBusy(false, "teacher");
+  if (profile?.role === "teacher") {
+    nav("teacher");
+  } else {
+    await initWithCloudProgress();
+    updateWelcomeScreen();
+    nav("welcome");
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  P = {};
+  nav("login");
+}
+
+async function initWithCloudProgress() {
+  try {
+    const { data } = await sb.from("progress")
+      .select("data").eq("student_id", currentUser.id).single();
+    if (data?.data) P = data.data;
+  } catch {}
+  initProgressStructure();
+}
+
+function setLoginError(msg) {
+  const el = document.getElementById("login-error");
+  if (el) el.textContent = msg;
+}
+
+function setLoginBusy(busy, who) {
+  const id  = who === "teacher" ? "btn-teacher-login" : "btn-student-login";
+  const btn = document.getElementById(id);
+  if (!btn) return;
+  btn.textContent = busy ? "Loading…" : (who === "teacher" ? "Sign In →" : "Enter →");
+  btn.disabled    = busy;
+}
+
+function toggleTeacherLogin() {
+  const sec = document.getElementById("teacher-section");
+  const open = sec.style.display !== "none";
+  sec.style.display = open ? "none" : "block";
+  document.getElementById("student-section").style.display = open ? "block" : "none";
+  document.getElementById("teacher-toggle-btn").textContent = open ? "Teacher login ›" : "Student login ›";
+  setLoginError("");
+}
+
+// ──────────────────────────────────────────────────────────────
+// TEACHER PORTAL
+// ──────────────────────────────────────────────────────────────
+async function renderTeacherPortal() {
+  const container = document.getElementById("teacher-content");
+  const status    = document.getElementById("teacher-status");
+  container.innerHTML = '<p style="color:var(--text-muted)">Loading…</p>';
+  if (status) status.textContent = "";
+
+  const [{ data: students, error: sErr }, { data: progRows }] = await Promise.all([
+    sb.from("profiles").select("id, username").eq("role", "student").order("username"),
+    sb.from("progress").select("student_id, data, updated_at")
+  ]);
+
+  if (sErr) { container.innerHTML = `<p style="color:var(--error)">Error: ${sErr.message}</p>`; return; }
+  if (!students?.length) { container.innerHTML = '<p style="color:var(--text-muted)">No students have logged in yet.</p>'; return; }
+
+  const progMap = {};
+  (progRows || []).forEach(r => { progMap[r.student_id] = r; });
+
+  const unit2        = COURSE_DATA.units.find(u => u.id === "unit2");
+  const totalLessons = unit2.modules.reduce((s, m) => s + m.lessons.length, 0);
+
+  let html = `<table class="teacher-table">
+    <thead><tr>
+      <th>Username</th>
+      <th>Overall</th>
+      ${unit2.modules.map(m => `<th>${m.code}<br><small style="font-weight:400;opacity:.7">${m.lessons.length} lessons</small></th>`).join("")}
+      <th>Avg Stars</th>
+      <th>Last Active</th>
+    </tr></thead><tbody>`;
+
+  students.forEach(student => {
+    const pr    = progMap[student.id];
+    const pData = pr?.data || {};
+    const u2p   = pData["unit2"]?.modules || {};
+
+    let totalDone = 0, totalStars = 0, starCount = 0;
+    unit2.modules.forEach(mod => {
+      mod.lessons.forEach(les => {
+        const lp = u2p[mod.id]?.lessons?.[les.id];
+        if (lp?.completed) {
+          totalDone++;
+          if (lp.stars) { totalStars += lp.stars; starCount++; }
+        }
+      });
+    });
+
+    const pct        = Math.round(totalDone / totalLessons * 100);
+    const avgStars   = starCount ? (totalStars / starCount).toFixed(1) : "—";
+    const lastActive = pr?.updated_at
+      ? new Date(pr.updated_at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })
+      : "—";
+    const displayName = student.username?.replace(/@aitcourse$/, "") || "—";
+
+    html += `<tr>
+      <td><strong>${displayName}</strong></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="t-prog-wrap"><div class="t-prog-bar" style="width:${pct}%"></div></div>
+          <small style="color:var(--text-muted)">${totalDone}/${totalLessons} · ${pct}%</small>
+        </div>
+      </td>`;
+
+    unit2.modules.forEach(mod => {
+      const mp   = u2p[mod.id];
+      const done = mod.lessons.filter(l => mp?.lessons?.[l.id]?.completed).length;
+      const full = done === mod.lessons.length;
+      const none = done === 0;
+      const color = full ? "#1e8c45" : none ? "#b0bec5" : "#e67e22";
+      html += `<td style="text-align:center;color:${color};font-weight:${full?700:400}">${full ? "✅ " : ""}${done}/${mod.lessons.length}</td>`;
+    });
+
+    html += `<td style="text-align:center">${avgStars !== "—" ? "⭐ " + avgStars : "—"}</td>
+      <td style="font-size:.82rem;color:var(--text-muted)">${lastActive}</td></tr>`;
+  });
+
+  html += "</tbody></table>";
+  container.innerHTML = html;
+  if (status) status.textContent = `${students.length} student${students.length !== 1 ? "s" : ""} registered · updated ${new Date().toLocaleTimeString()}`;
+}
+
+// ──────────────────────────────────────────────────────────────
 // WELCOME SCREEN — CONTINUE BUTTON
 // ──────────────────────────────────────────────────────────────
 function findNextLesson() {
@@ -2066,13 +2389,18 @@ function updateWelcomeScreen() {
   const next = findNextLesson();
   if (next) {
     btn.textContent = "▶ Continue Learning";
-    btn.onclick = () => {
-      curUnit = next.unit; curModule = next.mod; curLesson = next.les;
-      renderLesson();
-    };
+    btn.onclick = () => { curUnit = next.unit; curModule = next.mod; curLesson = next.les; renderLesson(); };
   } else {
     btn.textContent = "Start Learning";
     btn.onclick = () => nav("course");
+  }
+  // Show logged-in username
+  const userEl = document.getElementById("welcome-user");
+  if (userEl && currentUser) {
+    const name = currentUser.user_metadata?.username
+      || currentUser.email?.replace(/@aitcourse$/, "")
+      || "";
+    userEl.textContent = name ? `Logged in as ${name}` : "Progress saved to your account.";
   }
 }
 
@@ -2091,10 +2419,12 @@ function nav(screen) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById("screen-" + screen).classList.add("active");
   window.scrollTo(0, 0);
+  if (screen === "login")   { /* nothing extra needed */ }
   if (screen === "welcome") updateWelcomeScreen();
   if (screen === "course")  renderCourse();
   if (screen === "unit")    renderUnit();
   if (screen === "module")  renderModule();
+  if (screen === "teacher") renderTeacherPortal();
 }
 
 function openUnit(unitId) {
@@ -2877,10 +3207,19 @@ function placeholder(icon, title, text) {
 // ──────────────────────────────────────────────────────────────
 // INIT
 // ──────────────────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-  loadProgress();
+document.addEventListener("DOMContentLoaded", async () => {
   if (window.location.hash === "#demo") { runDemo(); return; }
-  nav("welcome");
+
+  // Restore session if user previously logged in on this device
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await initWithCloudProgress();
+    updateWelcomeScreen();
+    nav("welcome");
+  } else {
+    nav("login");
+  }
 });
 </script>
 </body>
