@@ -551,11 +551,398 @@ const COURSE_DATA = {
           title: "Spreadsheets",
           color: "#028090",
           lessons: [
-            { id: "c11_6_l1", title: "Introduction to Spreadsheets",    estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_6_l2", title: "Entering and Formatting Data",     estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_6_l3", title: "Basic Formulas and Functions",     estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_6_l4", title: "Charts and Graphs",               estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_6_l5", title: "Spreadsheet Project",             estimatedMinutes: 30, parts: { learn: [], tryIt: {}, check: [] } }
+
+            // ── LESSON 1 ─────────────────────────────────────────────
+            {
+              id: "c11_6_l1",
+              title: "What is a Spreadsheet?",
+              estimatedMinutes: 15,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "A spreadsheet stores information in a grid. 📊",
+                    body: `You can use it to organise numbers and data.<svg viewBox="0 0 280 152" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="152" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="26" fill="#e2e8f0"/><rect x="0" y="26" width="36" height="126" fill="#f0f4f8"/><line x1="36" y1="0" x2="36" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="0" x2="114" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="26" x2="280" y2="26" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="57" x2="280" y2="57" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="88" x2="280" y2="88" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="119" x2="280" y2="119" stroke="#cbd5e1" stroke-width="1"/><text x="75" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">B</text><text x="236" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="47" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="78" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">2</text><text x="18" y="109" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">3</text><text x="18" y="140" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">4</text><text x="75" y="47" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#028090" text-anchor="middle">Name</text><text x="153" y="47" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#028090" text-anchor="middle">Score</text><text x="75" y="78" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Ali</text><text x="153" y="78" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">85</text><text x="75" y="109" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Mia</text><text x="153" y="109" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">92</text><text x="75" y="140" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Sam</text><text x="153" y="140" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">78</text></svg>`
+                  },
+                  {
+                    type: "text",
+                    heading: "Rows go across the page. ➡️",
+                    body: `They are numbered: 1, 2, 3...<svg viewBox="0 0 280 152" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="152" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="26" fill="#e2e8f0"/><rect x="0" y="26" width="36" height="126" fill="#f0f4f8"/><rect x="36" y="57" width="244" height="31" fill="#bfdbfe"/><rect x="0" y="57" width="36" height="31" fill="#93c5fd"/><line x1="36" y1="0" x2="36" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="0" x2="114" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="26" x2="280" y2="26" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="57" x2="280" y2="57" stroke="#3b82f6" stroke-width="2"/><line x1="0" y1="88" x2="280" y2="88" stroke="#3b82f6" stroke-width="2"/><line x1="0" y1="119" x2="280" y2="119" stroke="#cbd5e1" stroke-width="1"/><text x="75" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">B</text><text x="236" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="47" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="78" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">2</text><text x="18" y="109" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">3</text><text x="18" y="140" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">4</text><text x="75" y="47" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Ali</text><text x="153" y="47" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">85</text><text x="75" y="78" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">Mia</text><text x="153" y="78" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">92</text><text x="236" y="78" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1d4ed8" text-anchor="middle">Yr 9</text><text x="75" y="109" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Sam</text><text x="153" y="109" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">78</text><text x="258" y="79" font-family="Arial,sans-serif" font-size="20" fill="#1d4ed8" text-anchor="middle">→</text></svg>`
+                  },
+                  {
+                    type: "text",
+                    heading: "Columns go up and down. ⬇️",
+                    body: `They are labelled: A, B, C...<svg viewBox="0 0 280 152" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="152" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="26" fill="#e2e8f0"/><rect x="0" y="26" width="36" height="126" fill="#f0f4f8"/><rect x="114" y="26" width="78" height="126" fill="#fed7aa"/><rect x="114" y="0" width="78" height="26" fill="#fb923c"/><line x1="36" y1="0" x2="36" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="0" x2="114" y2="152" stroke="#ea580c" stroke-width="2"/><line x1="192" y1="0" x2="192" y2="152" stroke="#ea580c" stroke-width="2"/><line x1="0" y1="26" x2="280" y2="26" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="57" x2="280" y2="57" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="88" x2="280" y2="88" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="119" x2="280" y2="119" stroke="#cbd5e1" stroke-width="1"/><text x="75" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">B</text><text x="236" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="47" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="78" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">2</text><text x="18" y="109" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">3</text><text x="18" y="140" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">4</text><text x="75" y="47" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Ali</text><text x="153" y="47" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#c2410c" text-anchor="middle">85</text><text x="75" y="78" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Mia</text><text x="153" y="78" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#c2410c" text-anchor="middle">92</text><text x="75" y="109" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">Sam</text><text x="153" y="109" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#c2410c" text-anchor="middle">78</text><text x="153" y="148" font-family="Arial,sans-serif" font-size="20" fill="#c2410c" text-anchor="middle">↓</text></svg>`
+                  },
+                  {
+                    type: "text",
+                    heading: "A cell is one single box. 📦",
+                    body: `Cell A1 is in column A, row 1.<svg viewBox="0 0 280 152" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="152" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="26" fill="#e2e8f0"/><rect x="0" y="26" width="36" height="126" fill="#f0f4f8"/><rect x="36" y="26" width="78" height="31" fill="#bbf7d0" stroke="#16a34a" stroke-width="2.5"/><line x1="36" y1="0" x2="36" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="0" x2="114" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="152" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="26" x2="280" y2="26" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="57" x2="280" y2="57" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="88" x2="280" y2="88" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="119" x2="280" y2="119" stroke="#cbd5e1" stroke-width="1"/><text x="75" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">B</text><text x="236" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="47" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="78" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">2</text><text x="18" y="109" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">3</text><text x="75" y="44" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#16a34a" text-anchor="middle">A1</text><text x="153" y="47" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">B1</text><text x="236" y="47" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">C1</text><text x="75" y="78" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">A2</text><text x="75" y="109" font-family="Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">A3</text></svg>`
+                  },
+                  {
+                    type: "text",
+                    heading: "A worksheet is one page in a spreadsheet file. 📄",
+                    body: `You can have more than one worksheet.<svg viewBox="0 0 280 170" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="170" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="26" fill="#e2e8f0"/><rect x="0" y="26" width="36" height="118" fill="#f0f4f8"/><line x1="36" y1="0" x2="36" y2="144" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="0" x2="114" y2="144" stroke="#cbd5e1" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="144" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="26" x2="280" y2="26" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="57" x2="280" y2="57" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="88" x2="280" y2="88" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="119" x2="280" y2="119" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="144" x2="280" y2="144" stroke="#64748b" stroke-width="1"/><text x="75" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">B</text><text x="236" y="18" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="47" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="78" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">2</text><text x="18" y="109" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">3</text><rect x="4" y="148" width="72" height="20" rx="4 4 0 0" fill="white" stroke="#028090" stroke-width="1.5"/><text x="40" y="162" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#028090" text-anchor="middle">Sheet 1</text><rect x="80" y="151" width="66" height="17" rx="4 4 0 0" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/><text x="113" y="163" font-family="Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Sheet 2</text><rect x="150" y="151" width="66" height="17" rx="4 4 0 0" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/><text x="183" y="163" font-family="Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Sheet 3</text></svg>`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each word to its meaning. 🧩",
+                  pairs: [
+                    { left: "Row",       right: "Goes across the page ➡️"         },
+                    { left: "Column",    right: "Goes up and down the page ⬇️"    },
+                    { left: "Cell",      right: "One single box in the grid 📦"   },
+                    { left: "Worksheet", right: "One page in a spreadsheet file 📄" }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does a row do? ➡️",
+                    options: [
+                      { text: "Goes across the page",    correct: true  },
+                      { text: "Goes up and down",         correct: false },
+                      { text: "Holds one value only",     correct: false }
+                    ],
+                    explanation: "Rows go across the page from left to right. They are numbered 1, 2, 3..."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is cell B3? 📦",
+                    options: [
+                      { text: "Column 3, Row B",              correct: false },
+                      { text: "Column B, Row 3",              correct: true  },
+                      { text: "The third worksheet",          correct: false }
+                    ],
+                    explanation: "Cell addresses are always column first, then row. So B3 = column B, row 3."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is a worksheet? 📄",
+                    options: [
+                      { text: "A formula",                          correct: false },
+                      { text: "One cell",                           correct: false },
+                      { text: "One page in a spreadsheet file",     correct: true  }
+                    ],
+                    explanation: "A worksheet is one page in your spreadsheet file. You can have many worksheets in one file."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 2 ─────────────────────────────────────────────
+            {
+              id: "c11_6_l2",
+              title: "Typing Formulas",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "A formula tells the spreadsheet to calculate. 🧮",
+                    body: `Always start a formula with the = sign.<svg viewBox="0 0 280 110" style="display:block;width:100%;margin-top:14px;border-radius:8px" xmlns="http://www.w3.org/2000/svg"><rect width="280" height="110" fill="#f8fafc" rx="6" stroke="#e2e8f0" stroke-width="1"/><rect width="280" height="28" fill="#f0f4f8" stroke="#e2e8f0" stroke-width="1"/><rect x="4" y="4" width="46" height="20" rx="3" fill="white" stroke="#cbd5e1" stroke-width="1"/><text x="27" y="18" font-family="Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">C1</text><rect x="54" y="4" width="222" height="20" rx="3" fill="white" stroke="#3b82f6" stroke-width="2"/><text x="66" y="18" font-family="monospace,Arial" font-size="13" font-weight="700" fill="#1d4ed8">=A1+B1</text><rect width="280" height="28" y="28" fill="#e2e8f0"/><line x1="36" y1="28" x2="36" y2="110" stroke="#cbd5e1" stroke-width="1"/><line x1="114" y1="28" x2="114" y2="110" stroke="#cbd5e1" stroke-width="1"/><line x1="192" y1="28" x2="192" y2="110" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="56" x2="280" y2="56" stroke="#cbd5e1" stroke-width="1"/><line x1="0" y1="84" x2="280" y2="84" stroke="#cbd5e1" stroke-width="1"/><text x="75" y="46" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#64748b" text-anchor="middle">A</text><text x="153" y="46" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#64748b" text-anchor="middle">B</text><text x="236" y="46" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#64748b" text-anchor="middle">C</text><text x="18" y="74" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">1</text><text x="18" y="100" font-family="Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">2</text><text x="75" y="74" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">30</text><text x="153" y="74" font-family="Arial,sans-serif" font-size="12" fill="#1e293b" text-anchor="middle">20</text><rect x="192" y="56" width="88" height="28" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/><text x="236" y="74" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#0284c7" text-anchor="middle">50</text></svg>`
+                  },
+                  {
+                    type: "text",
+                    heading: "The + sign adds numbers together. ➕",
+                    body: `Example: <strong>=A1+B1</strong><br><br>If A1 = 30 and B1 = 20, the answer is 50.`
+                  },
+                  {
+                    type: "text",
+                    heading: "The − sign subtracts numbers. ➖",
+                    body: `Example: <strong>=A1-B1</strong><br><br>If A1 = 30 and B1 = 20, the answer is 10.`
+                  },
+                  {
+                    type: "text",
+                    heading: "The * sign multiplies numbers. ✖️",
+                    body: `Example: <strong>=A1*B1</strong><br><br>If A1 = 30 and B1 = 20, the answer is 600.`
+                  },
+                  {
+                    type: "text",
+                    heading: "The / sign divides numbers. ➗",
+                    body: `Example: <strong>=A1/B1</strong><br><br>If A1 = 30 and B1 = 5, the answer is 6.`
+                  }
+                ],
+                tryIt: {
+                  type: "multipleChoice",
+                  question: "One of these formulas is broken. Which one is correct for adding A1 and B1? 🧮",
+                  options: [
+                    { text: "A1+B1",    correct: false },
+                    { text: "=A1+B1",   correct: true  },
+                    { text: "+A1+B1",   correct: false },
+                    { text: "A1=+B1",   correct: false }
+                  ],
+                  explanation: "Every formula must start with =. So the correct answer is =A1+B1."
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What must every formula start with? 🧮",
+                    options: [
+                      { text: "A letter",  correct: false },
+                      { text: "A number",  correct: false },
+                      { text: "=",         correct: true  }
+                    ],
+                    explanation: "All formulas must start with the = sign. This tells the spreadsheet to calculate."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which formula adds A1 and B1? ➕",
+                    options: [
+                      { text: "=A1+B1",  correct: true  },
+                      { text: "=A1*B1",  correct: false },
+                      { text: "=A1-B1",  correct: false }
+                    ],
+                    explanation: "The + sign adds numbers. So =A1+B1 adds the values in A1 and B1 together."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which symbol divides in a formula? ➗",
+                    options: [
+                      { text: "÷",  correct: false },
+                      { text: "/",  correct: true  },
+                      { text: ":",  correct: false }
+                    ],
+                    explanation: "In spreadsheet formulas, / is used to divide. For example: =A1/B1."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 3 ─────────────────────────────────────────────
+            {
+              id: "c11_6_l3",
+              title: "SUM and AVERAGE",
+              estimatedMinutes: 25,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "SUM adds up a group of cells. ➕",
+                    body: `Example: <strong>=SUM(B2:B6)</strong><br><br>This adds all values from B2 to B6.`
+                  },
+                  {
+                    type: "text",
+                    heading: "The colon : means from...to. 📏",
+                    body: `B2:B6 means from cell B2 to cell B6.<br><br>It includes every cell in between.`
+                  },
+                  {
+                    type: "text",
+                    heading: "AVERAGE finds the middle value. 📊",
+                    body: `Example: <strong>=AVERAGE(B2:B6)</strong><br><br>This finds the average of B2 to B6.`
+                  },
+                  {
+                    type: "text",
+                    heading: "SUM and AVERAGE are called functions. ⚙️",
+                    body: `Functions are shortcuts that do the maths for you.<br><br>You do not need to type each cell one by one.`
+                  }
+                ],
+                tryIt: {
+                  type: "fillBlank",
+                  question: "Complete this formula to add up cells B2 to B6: =SUM(___)",
+                  answer: "B2:B6",
+                  acceptableAnswers: ["B2:B6", "b2:b6"],
+                  explanation: "B2:B6 means from cell B2 to cell B6. The colon : means 'to'."
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does =SUM(B2:B6) do? ➕",
+                    options: [
+                      { text: "Averages B2 to B6",       correct: false },
+                      { text: "Adds up B2 to B6",         correct: true  },
+                      { text: "Subtracts B6 from B2",     correct: false }
+                    ],
+                    explanation: "SUM adds all the values in the range together. =SUM(B2:B6) adds B2 + B3 + B4 + B5 + B6."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What does the colon : mean in a formula? 📏",
+                    options: [
+                      { text: "Divide",     correct: false },
+                      { text: "From...to",  correct: true  },
+                      { text: "Equals",     correct: false }
+                    ],
+                    explanation: "The colon means 'from...to'. B2:B6 means from B2 to B6, including all cells in between."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which function finds the middle value? 📊",
+                    options: [
+                      { text: "SUM",      correct: false },
+                      { text: "COUNT",    correct: false },
+                      { text: "AVERAGE",  correct: true  }
+                    ],
+                    explanation: "AVERAGE adds up all the values and divides by how many there are. That gives the middle value."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 4 ─────────────────────────────────────────────
+            {
+              id: "c11_6_l4",
+              title: "Making it Look Good",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "You can change how a cell looks. 🎨",
+                    body: `This is called <strong>formatting</strong>.<br><br>Formatting makes your data easy to read.`
+                  },
+                  {
+                    type: "text",
+                    heading: "There are different number formats. 🔢",
+                    body: `<strong>Text</strong> — shows words and letters.<br><strong>Number</strong> — shows plain numbers.<br><strong>Currency</strong> — adds a $ sign. 💲<br><strong>Date</strong> — shows a date. 📅`
+                  },
+                  {
+                    type: "text",
+                    heading: "Borders go around the edges of cells. ▦",
+                    body: `They make your table easy to read.<br><br>Choose Format → Cells → Border to add them.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Use colour on your header row. 🌈",
+                    body: `It helps people find the headings fast.<br><br>Choose a colour that is easy to read.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Centre numbers in their cells. ↔️",
+                    body: `Left-align text in their cells.<br><br>This follows the standard style used everywhere.`
+                  }
+                ],
+                tryIt: {
+                  type: "hotspot",
+                  question: "This spreadsheet has 5 formatting problems. Click each numbered spot to find them! 🔍",
+                  imageSrc: null,
+                  hotspots: [
+                    { id: "fd1", label: "Missing header background colour 🌈", x: 50, y: 18 },
+                    { id: "fd2", label: "Numbers are not centred ↔️",          x: 72, y: 42 },
+                    { id: "fd3", label: "No borders around the cells ▦",       x: 25, y: 62 },
+                    { id: "fd4", label: "Price shown as text, not currency 💲", x: 72, y: 68 },
+                    { id: "fd5", label: "Heading is not bold",                  x: 25, y: 18 }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "Which format adds a $ sign? 💲",
+                    options: [
+                      { text: "Text",      correct: false },
+                      { text: "Date",      correct: false },
+                      { text: "Currency",  correct: true  }
+                    ],
+                    explanation: "The Currency format adds a dollar sign and shows two decimal places. For example: $12.50."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Where should you add a background colour? 🌈",
+                    options: [
+                      { text: "Every cell",      correct: false },
+                      { text: "The header row",  correct: true  },
+                      { text: "Only column A",   correct: false }
+                    ],
+                    explanation: "Colouring the header row helps people find the headings quickly. Too much colour makes data hard to read."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "How should you align numbers in a cell? ↔️",
+                    options: [
+                      { text: "Left",    correct: false },
+                      { text: "Centre",  correct: true  },
+                      { text: "Right",   correct: false }
+                    ],
+                    explanation: "Numbers should be centred in their cells. Text is usually left-aligned. This is the standard style."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 5 ─────────────────────────────────────────────
+            {
+              id: "c11_6_l5",
+              title: "Creating Charts",
+              estimatedMinutes: 30,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "A chart turns numbers into a picture. 📊",
+                    body: `Charts make data easy to understand.<br><br>You can see patterns much faster with a chart.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 1: Select the data you want to chart. 🖱️",
+                    body: `Click and drag to highlight the cells.<br><br>Include the headings so the chart has labels.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 2: Click Insert, then click Chart. 📥",
+                    body: `The Insert menu is at the top of the screen.<br><br>This opens the chart builder.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 3: Choose your chart type. 📈",
+                    body: `Column, Bar, Line, or Pie charts all work.<br><br>Pick the one that suits your data best.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 4: Give your chart a title. 🏷️",
+                    body: `A good title tells the reader what the chart shows.<br><br>Example: "Test Scores for Class 11A"`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 5: Move the chart below your data. ⬇️",
+                    body: `Click and drag the chart to move it.<br><br>Placing it below keeps your data easy to find.`
+                  }
+                ],
+                tryIt: {
+                  type: "ordering",
+                  question: "Put these chart-making steps in the correct order. 📊",
+                  items: [
+                    { text: "Select your data",           order: 1 },
+                    { text: "Click Insert then Chart",    order: 2 },
+                    { text: "Choose a chart type",        order: 3 },
+                    { text: "Add a title",                order: 4 },
+                    { text: "Move it below your data",    order: 5 }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is the first step to make a chart? 📊",
+                    options: [
+                      { text: "Add a title",       correct: false },
+                      { text: "Select your data",  correct: true  },
+                      { text: "Choose a colour",   correct: false }
+                    ],
+                    explanation: "Always select your data first. This tells the spreadsheet what information to use in the chart."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Where do you click to start a chart? 📥",
+                    options: [
+                      { text: "Format",  correct: false },
+                      { text: "View",    correct: false },
+                      { text: "Insert",  correct: true  }
+                    ],
+                    explanation: "Click Insert at the top of the screen, then click Chart. This opens the chart builder."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Where should you place the finished chart? ⬇️",
+                    options: [
+                      { text: "On a new page",       correct: false },
+                      { text: "Below your data",     correct: true  },
+                      { text: "Above the title",     correct: false }
+                    ],
+                    explanation: "Placing the chart below the data keeps everything together and easy to read."
+                  }
+                ]
+              }
+            }
+
           ]
         },
         {
