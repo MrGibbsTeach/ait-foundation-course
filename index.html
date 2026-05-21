@@ -2191,7 +2191,7 @@ async function studentLogin() {
   if (!username) return setLoginError("Username can only contain letters, numbers, - and _");
 
   setLoginBusy(true, "student");
-  const email = username + "@aitcourse.local";
+  const email = username + "@example.com";
   const pass  = username;
 
   // Try sign-in first; if no account exists, create one
@@ -2335,7 +2335,7 @@ async function renderTeacherPortal() {
     const lastActive = pr?.updated_at
       ? new Date(pr.updated_at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })
       : "—";
-    const displayName = student.username?.replace(/@aitcourse.local$/, "") || "—";
+    const displayName = student.username?.replace(/@example.com$/, "") || "—";
 
     html += `<tr>
       <td><strong>${displayName}</strong></td>
@@ -2398,7 +2398,7 @@ function updateWelcomeScreen() {
   const userEl = document.getElementById("welcome-user");
   if (userEl && currentUser) {
     const name = currentUser.user_metadata?.username
-      || currentUser.email?.replace(/@aitcourse.local$/, "")
+      || currentUser.email?.replace(/@example.com$/, "")
       || "";
     userEl.textContent = name ? `Logged in as ${name}` : "Progress saved to your account.";
   }
