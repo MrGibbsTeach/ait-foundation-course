@@ -950,10 +950,327 @@ const COURSE_DATA = {
           title: "Social Collaboration",
           color: "#2F3C7E",
           lessons: [
-            { id: "c11_7_l1", title: "Introduction to Collaboration Tools", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_7_l2", title: "Working with Cloud Documents",        estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_7_l3", title: "Communication and Sharing",           estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "c11_7_l4", title: "Digital Citizenship Online",          estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } }
+
+            // ── LESSON 1 ─────────────────────────────────────────────
+            {
+              id: "c11_7_l1",
+              title: "Online Communication Tools",
+              estimatedMinutes: 15,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "A blog is a personal website. 📝",
+                    body: `Someone writes regular posts on a blog.<br><br>People read it to follow their ideas and stories.`
+                  },
+                  {
+                    type: "text",
+                    heading: "A forum is an online notice board. 💬",
+                    body: `People visit forums to discuss topics together.<br><br>Anyone can ask a question or give an answer.`
+                  },
+                  {
+                    type: "text",
+                    heading: "News sites share current news articles. 📰",
+                    body: `You can read the latest news online anytime.<br><br>Examples: ABC News, BBC, The Guardian.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Photo-sharing sites let you post photos online. 📸",
+                    body: `You can share photos with friends and followers.<br><br>Instagram and Flickr are popular examples.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Online games let you play with others. 🎮",
+                    body: `You connect to other players over the internet.<br><br>You can play with friends or strangers worldwide.`
+                  },
+                  {
+                    type: "text",
+                    heading: "YouTube lets you watch and share videos. ▶️",
+                    body: `Anyone can upload a video to YouTube.<br><br>Billions of people watch YouTube every day.`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each online tool to what it does. 🧩",
+                  pairs: [
+                    { left: "Blog 📝",          right: "A personal website with regular written posts"    },
+                    { left: "Forum 💬",          right: "An online notice board for discussing topics"    },
+                    { left: "Photo-sharing 📸",  right: "A site where you upload and share photos"        },
+                    { left: "YouTube ▶️",        right: "A site where you watch and upload videos"        }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is a blog? 📝",
+                    options: [
+                      { text: "A game you play online",                      correct: false },
+                      { text: "A personal website with regular posts",        correct: true  },
+                      { text: "A site for watching videos",                   correct: false }
+                    ],
+                    explanation: "A blog is a personal website. The writer posts regularly about topics they care about."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is a forum used for? 💬",
+                    options: [
+                      { text: "Sharing photos with followers",                correct: false },
+                      { text: "Reading the latest news",                      correct: false },
+                      { text: "Discussing topics with other people online",   correct: true  }
+                    ],
+                    explanation: "A forum is like an online notice board. People post questions and replies to discuss topics."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which tool is best for watching and sharing videos? ▶️",
+                    options: [
+                      { text: "Instagram",   correct: false },
+                      { text: "YouTube",     correct: true  },
+                      { text: "A news site", correct: false }
+                    ],
+                    explanation: "YouTube is designed for watching and sharing videos. Anyone can upload a video."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 2 ─────────────────────────────────────────────
+            {
+              id: "c11_7_l2",
+              title: "E-Learning",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "E-learning is learning that happens online. 💻",
+                    body: `You use a device and the internet to learn.<br><br>You do not need to be in a classroom.`
+                  },
+                  {
+                    type: "text",
+                    heading: "There are many e-learning tools. 📱",
+                    body: `<strong>Khan Academy</strong> — free lessons on many subjects.<br><strong>YouTube</strong> — millions of tutorial videos.<br><strong>Duolingo</strong> — learn a new language for free.`
+                  },
+                  {
+                    type: "text",
+                    heading: "E-learning has great advantages. ✅",
+                    body: `You can learn from anywhere in the world.<br>You go at your own pace — fast or slow.<br>Many resources are completely free.`
+                  },
+                  {
+                    type: "text",
+                    heading: "E-learning also has some challenges. ⚠️",
+                    body: `You need internet access to learn online.<br>It is easy to get distracted at home.<br>You do not have a teacher nearby to help.`
+                  }
+                ],
+                tryIt: {
+                  type: "dragDrop",
+                  question: "Sort each statement into the correct column. 📊",
+                  items: [
+                    "Learn from anywhere",
+                    "Go at your own pace",
+                    "Lots of free resources",
+                    "Need internet access",
+                    "Easy to get distracted",
+                    "No teacher nearby"
+                  ],
+                  categories: [
+                    { label: "Advantage ✅", accepts: ["Learn from anywhere", "Go at your own pace", "Lots of free resources"] },
+                    { label: "Disadvantage ⚠️", accepts: ["Need internet access", "Easy to get distracted", "No teacher nearby"] }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does e-learning mean? 💻",
+                    options: [
+                      { text: "Learning in a classroom",         correct: false },
+                      { text: "Learning that happens online",    correct: true  },
+                      { text: "Learning from a textbook",        correct: false }
+                    ],
+                    explanation: "E-learning means learning online. You use a device and the internet instead of a classroom."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which is an advantage of e-learning? ✅",
+                    options: [
+                      { text: "You always have a teacher nearby",  correct: false },
+                      { text: "You learn at your own pace",        correct: true  },
+                      { text: "You do not need the internet",      correct: false }
+                    ],
+                    explanation: "A big advantage of e-learning is going at your own pace. You can pause, rewind, or repeat."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which is a disadvantage of e-learning? ⚠️",
+                    options: [
+                      { text: "It costs too much money",           correct: false },
+                      { text: "It is only for adults",            correct: false },
+                      { text: "You need internet access",         correct: true  }
+                    ],
+                    explanation: "E-learning requires internet. If you have no internet, you cannot access the lessons."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 3 ─────────────────────────────────────────────
+            {
+              id: "c11_7_l3",
+              title: "E-Commerce and Online Shopping",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "E-commerce is buying and selling things online. 🛒",
+                    body: `You shop using a website or an app.<br><br>You pay online and the item arrives at your door.`
+                  },
+                  {
+                    type: "text",
+                    heading: "E-commerce sites are everywhere. 📦",
+                    body: `<strong>eBay</strong> — buy and sell second-hand items.<br><strong>Amazon</strong> — millions of products delivered fast.<br><strong>Kmart online</strong> — shop from a major retailer.<br><strong>Uber Eats</strong> — order food to your home.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Online shopping has great advantages. 🕐",
+                    body: `You can shop from home in your pyjamas.<br>You can compare prices across many stores.<br>Shops are open 24 hours a day, 7 days a week.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Online shopping also has some risks. ⚠️",
+                    body: `You cannot touch or try items before buying.<br>There is a risk of scams and fake websites.<br>You may wait days or weeks for delivery.`
+                  }
+                ],
+                tryIt: {
+                  type: "dragDrop",
+                  question: "Sort each statement into True or False. ✅❌",
+                  items: [
+                    "You can shop online at midnight",
+                    "eBay is an example of e-commerce",
+                    "You can compare prices easily online",
+                    "You can touch items before buying online",
+                    "Online shopping has no risks",
+                    "E-commerce only works during business hours"
+                  ],
+                  categories: [
+                    { label: "True ✅",  accepts: ["You can shop online at midnight", "eBay is an example of e-commerce", "You can compare prices easily online"] },
+                    { label: "False ❌", accepts: ["You can touch items before buying online", "Online shopping has no risks", "E-commerce only works during business hours"] }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is e-commerce? 🛒",
+                    options: [
+                      { text: "Shopping in a physical store",         correct: false },
+                      { text: "Buying and selling things online",     correct: true  },
+                      { text: "Sending emails to companies",          correct: false }
+                    ],
+                    explanation: "E-commerce means buying and selling things online. You shop using a website or app."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which is an advantage of online shopping? 🕐",
+                    options: [
+                      { text: "You can try items before buying",      correct: false },
+                      { text: "Delivery is always instant",           correct: false },
+                      { text: "Shops are open 24 hours a day",        correct: true  }
+                    ],
+                    explanation: "Online stores never close. You can shop at midnight, on weekends, or on public holidays."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which is a risk of online shopping? ⚠️",
+                    options: [
+                      { text: "Too many products to choose from",     correct: false },
+                      { text: "Scams and fake websites",              correct: true  },
+                      { text: "Prices are always too high",           correct: false }
+                    ],
+                    explanation: "Scam websites look real but steal your money or details. Always check the site is trusted."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 4 ─────────────────────────────────────────────
+            {
+              id: "c11_7_l4",
+              title: "Online Banking",
+              estimatedMinutes: 15,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Online banking lets you manage money digitally. 🏦",
+                    body: `You use an app or website to manage your account.<br><br>You do not need to visit a bank branch.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Online banking has many advantages. ✅",
+                    body: `Check your balance anytime, day or night.<br>Transfer money to someone in seconds.<br>Pay bills from home without queuing.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Online banking has some serious risks. 👾",
+                    body: `Hackers may try to steal your login details.<br>Phishing emails trick you into giving your password.<br>You could get locked out of your account.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Stay safe when banking online. 🔒",
+                    body: `Always use a strong, unique password.<br>Only bank on websites that start with <strong>https://</strong>.<br>Log out when you are finished.`
+                  }
+                ],
+                tryIt: {
+                  type: "dragDrop",
+                  question: "Sort each action into Safe or Risky. 🔒⚠️",
+                  items: [
+                    "Use a strong password",
+                    "Check for https://",
+                    "Log out when done",
+                    "Use the same password everywhere",
+                    "Click unknown email links",
+                    "Use public WiFi for banking"
+                  ],
+                  categories: [
+                    { label: "Safe 🔒",   accepts: ["Use a strong password", "Check for https://", "Log out when done"] },
+                    { label: "Risky ⚠️",  accepts: ["Use the same password everywhere", "Click unknown email links", "Use public WiFi for banking"] }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is online banking? 🏦",
+                    options: [
+                      { text: "Visiting a bank branch in person",              correct: false },
+                      { text: "Managing your money through an app or website", correct: true  },
+                      { text: "Using cash at a shop",                          correct: false }
+                    ],
+                    explanation: "Online banking lets you manage your money digitally. You use an app or website instead of visiting a branch."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which action keeps you safe in online banking? 🔒",
+                    options: [
+                      { text: "Using the same password for all websites",  correct: false },
+                      { text: "Clicking links in unknown emails",           correct: false },
+                      { text: "Using a strong, unique password",            correct: true  }
+                    ],
+                    explanation: "A strong, unique password is harder for hackers to guess. Never reuse passwords across sites."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What does https:// at the start of a website mean? 🔒",
+                    options: [
+                      { text: "The website is very popular",     correct: false },
+                      { text: "The connection is secure",        correct: true  },
+                      { text: "The website is free to use",      correct: false }
+                    ],
+                    explanation: "https:// means the website uses encryption. Your data is protected as it travels online."
+                  }
+                ]
+              }
+            }
+
           ]
         },
         {
