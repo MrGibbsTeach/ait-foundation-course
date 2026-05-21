@@ -352,6 +352,11 @@ p  { line-height: 1.6; }
 }
 .btn-submit:hover:not(:disabled) { background: #1558c0; }
 .btn-submit:disabled { background: #b0bec5; cursor: default; }
+.btn-retry {
+  background: transparent; color: var(--primary); border: 2px solid var(--primary);
+  border-radius: 11px; padding: 10px 18px; margin-top: 10px; font-weight: 600; display: block;
+}
+.btn-retry:hover { background: #e8f0fd; }
 
 /* Feedback */
 .feedback {
@@ -954,7 +959,7 @@ const COURSE_DATA = {
                 tryIt: {
                   type: "hotspot",
                   question: "This spreadsheet has 5 formatting problems. Click each numbered spot to find them! 🔍",
-                  imageSrc: null,
+                  svgContent: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" style="width:100%;border-radius:12px;display:block"><rect width="400" height="260" fill="#fafafa" rx="12"/><rect x="0" y="0" width="32" height="260" fill="#eeeeee"/><rect x="32" y="0" width="368" height="60" fill="#ffffff"/><line x1="0" y1="60" x2="400" y2="60" stroke="#cccccc" stroke-width="1"/><line x1="32" y1="0" x2="32" y2="260" stroke="#cccccc" stroke-width="1"/><line x1="192" y1="0" x2="192" y2="260" stroke="#cccccc" stroke-width="1"/><line x1="272" y1="0" x2="272" y2="260" stroke="#cccccc" stroke-width="1"/><text x="16" y="37" text-anchor="middle" font-size="11" fill="#888888">1</text><text x="16" y="98" text-anchor="middle" font-size="11" fill="#888888">2</text><text x="16" y="158" text-anchor="middle" font-size="11" fill="#888888">3</text><text x="16" y="218" text-anchor="middle" font-size="11" fill="#888888">4</text><text x="112" y="37" text-anchor="middle" font-size="14" fill="#333333" font-weight="normal">Product Name</text><text x="232" y="37" text-anchor="middle" font-size="14" fill="#333333" font-weight="normal">Qty</text><text x="336" y="37" text-anchor="middle" font-size="14" fill="#333333" font-weight="normal">Price</text><rect x="32" y="60" width="368" height="65" fill="#ffffff"/><text x="44" y="98" font-size="13" fill="#333333">Pencil Case</text><text x="200" y="98" font-size="13" fill="#333333">12</text><text x="280" y="98" font-size="13" fill="#333333">3.50</text><rect x="32" y="125" width="368" height="65" fill="#f5f5f5"/><text x="44" y="163" font-size="13" fill="#333333">Notebook</text><text x="200" y="163" font-size="13" fill="#333333">8</text><text x="280" y="163" font-size="13" fill="#333333">5.99</text><rect x="32" y="190" width="368" height="70" fill="#ffffff"/><text x="44" y="228" font-size="13" fill="#333333">Ruler</text><text x="200" y="228" font-size="13" fill="#333333">5</text><text x="280" y="228" font-size="13" fill="#333333">2.25</text></svg>`,
                   hotspots: [
                     { id: "fd1", label: "Missing header background colour 🌈", x: 50, y: 18 },
                     { id: "fd2", label: "Numbers are not centred ↔️",          x: 72, y: 42 },
@@ -1606,7 +1611,7 @@ const COURSE_DATA = {
                 tryIt: {
                   type: "hotspot",
                   question: "Click each frame on the layout. Find all 4 frames! 🖼️📝",
-                  imageSrc: null,
+                  svgContent: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280" style="width:100%;border-radius:12px;display:block"><rect width="400" height="280" fill="#d8d8d8" rx="12"/><rect x="10" y="10" width="380" height="260" fill="#ffffff" rx="4"/><rect x="22" y="28" width="168" height="112" fill="#aad4f5" stroke="#3a86c8" stroke-width="2" rx="4"/><text x="106" y="84" text-anchor="middle" font-size="13" fill="#1a5a99" font-weight="600">Image Frame</text><text x="106" y="102" text-anchor="middle" font-size="11" fill="#2266aa">(holds a photo)</text><rect x="210" y="28" width="168" height="112" fill="#fff8dc" stroke="#c8a832" stroke-width="2" rx="4"/><text x="294" y="84" text-anchor="middle" font-size="13" fill="#665500" font-weight="600">Text Frame</text><line x1="224" y1="98" x2="364" y2="98" stroke="#c8a832" stroke-width="1"/><line x1="224" y1="110" x2="364" y2="110" stroke="#c8a832" stroke-width="1"/><line x1="224" y1="122" x2="364" y2="122" stroke="#c8a832" stroke-width="1"/><rect x="22" y="154" width="168" height="112" fill="#aad4f5" stroke="#3a86c8" stroke-width="2" rx="4"/><text x="106" y="210" text-anchor="middle" font-size="13" fill="#1a5a99" font-weight="600">Image Frame</text><text x="106" y="228" text-anchor="middle" font-size="11" fill="#2266aa">(holds a photo)</text><rect x="210" y="154" width="168" height="112" fill="#fff8dc" stroke="#c8a832" stroke-width="2" rx="4"/><text x="294" y="210" text-anchor="middle" font-size="13" fill="#665500" font-weight="600">Text Frame</text><line x1="224" y1="224" x2="364" y2="224" stroke="#c8a832" stroke-width="1"/><line x1="224" y1="236" x2="364" y2="236" stroke="#c8a832" stroke-width="1"/><line x1="224" y1="248" x2="364" y2="248" stroke="#c8a832" stroke-width="1"/></svg>`,
                   hotspots: [
                     { id: "f1", label: "Image frame — holds a photo 🖼️",     x: 20, y: 30 },
                     { id: "f2", label: "Text frame — holds words 📝",         x: 70, y: 30 },
@@ -2388,7 +2393,7 @@ function updateWelcomeScreen() {
   if (!btn) return;
   const next = findNextLesson();
   if (next) {
-    btn.textContent = "▶ Continue Learning";
+    btn.textContent = "▶ Continue: " + next.les.title;
     btn.onclick = () => { curUnit = next.unit; curModule = next.mod; curLesson = next.les; renderLesson(); };
   } else {
     btn.textContent = "Start Learning";
@@ -2551,13 +2556,22 @@ function renderModule() {
     const done   = lp?.completed;
     const icon   = locked ? "🔒" : done ? "✅" : "▶";
 
+    let lockMsg = "";
+    if (locked && i > 0) {
+      const prevLp = P[curUnit.id]?.modules[mod.id]?.lessons[mod.lessons[i - 1].id];
+      if (prevLp?.completed && (prevLp.stars || 0) < 2) {
+        lockMsg = " · rate yourself ⭐⭐ on the previous lesson to unlock";
+      } else {
+        lockMsg = " · complete the previous lesson to unlock";
+      }
+    }
     const row = el("div", "lesson-row" + (locked ? " locked" : "") + (done ? " done" : ""));
     if (!locked) row.onclick = () => openLesson(les.id);
     row.innerHTML = `
       <div class="lesson-icon">${icon}</div>
       <div class="lesson-info">
         <h4>${i + 1}. ${les.title}</h4>
-        <small>~${les.estimatedMinutes} min${locked ? " · complete previous lesson to unlock" : ""}</small>
+        <small>~${les.estimatedMinutes} min${lockMsg}</small>
       </div>
       <div class="lesson-arrow">${locked ? "" : "›"}</div>`;
     list.appendChild(row);
@@ -2652,6 +2666,12 @@ function renderCheck(body) {
     });
   });
 
+  // Star unlock hint
+  const starHint = el("p","");
+  starHint.style.cssText = "text-align:center;color:var(--text-muted);font-size:.88rem;margin:14px 0 4px;";
+  starHint.innerHTML = "⭐⭐ Rate yourself <strong>2 stars or higher</strong> to unlock the next lesson.";
+  body.appendChild(starHint);
+
   // Mandatory self-rating added to every check tab
   renderActivity(body, {
     type: "starRating",
@@ -2708,8 +2728,14 @@ function actMultipleChoice(container, raw, key, onDone) {
     btn.onclick = () => {
       if (done) return; done = true;
       d.options.forEach((o,j) => wrap.children[j].classList.add(o.correct ? "ok" : "bad"));
-      showFeedback(card.querySelector("#fbx-"+key), opt.correct, d.explanation);
-      onDone();
+      const fbEl = card.querySelector("#fbx-"+key);
+      showFeedback(fbEl, opt.correct, d.explanation);
+      if (opt.correct) { onDone(); } else {
+        showRetry(fbEl, () => {
+          done = false;
+          Array.from(wrap.children).forEach(b => b.classList.remove("ok","bad"));
+        });
+      }
     };
     wrap.appendChild(btn);
   });
@@ -2743,8 +2769,15 @@ function actTrueFalse(container, raw, key, onDone) {
       const correct = picked === d.answer;
       trueBtn .classList.add(d.answer  ? "ok" : "bad");
       falseBtn.classList.add(!d.answer ? "ok" : "bad");
-      showFeedback(card.querySelector("#fbx-"+key), correct, d.explanation);
-      onDone();
+      const fbEl = card.querySelector("#fbx-"+key);
+      showFeedback(fbEl, correct, d.explanation);
+      if (correct) { onDone(); } else {
+        showRetry(fbEl, () => {
+          done = false;
+          trueBtn.classList.remove("ok","bad");
+          falseBtn.classList.remove("ok","bad");
+        });
+      }
     };
   });
 }
@@ -2775,8 +2808,13 @@ function actFillBlank(container, raw, key, onDone) {
     const ok  = (d.acceptableAnswers || [d.answer]).map(a => a.toLowerCase()).includes(val);
     input.classList.add(ok ? "ok" : "bad");
     btn.disabled = true;
-    showFeedback(card.querySelector("#fbx-"+key), ok, d.explanation);
-    onDone();
+    const fbEl = card.querySelector("#fbx-"+key);
+    showFeedback(fbEl, ok, d.explanation);
+    if (ok) { onDone(); } else {
+      showRetry(fbEl, () => {
+        done = false; input.value = ""; input.classList.remove("ok","bad"); btn.disabled = false; input.focus();
+      });
+    }
   };
   btn.onclick = check;
   input.addEventListener("keypress", e => { if (e.key === "Enter") check(); });
@@ -2915,14 +2953,15 @@ function actDragDrop(container, raw, key, onDone) {
 
   card.querySelector("#dnd-btn-"+key).onclick = () => {
     if (submitted) return;
+    const fbEl = card.querySelector("#fbx-"+key);
     if (Object.keys(placed).length < d.items.length) {
-      showFeedback(card.querySelector("#fbx-"+key), false, "Place all items before checking."); return;
+      showFeedback(fbEl, false, "Place all items before checking."); return;
     }
     let allOk = d.items.every(it => d.categories.find(c => c.label === placed[it])?.accepts.includes(it));
-    submitted = true;
-    showFeedback(card.querySelector("#fbx-"+key), allOk,
-      allOk ? "All items sorted correctly!" : "Some items are in the wrong category — review and try again.");
-    onDone();
+    showFeedback(fbEl, allOk, allOk ? "All items sorted correctly!" : "Some items are in the wrong category.");
+    if (allOk) { submitted = true; onDone(); } else {
+      showRetry(fbEl, () => { placed = {}; selItem = null; refresh(); });
+    }
   };
   refresh();
 }
@@ -2970,9 +3009,11 @@ function actOrdering(container, raw, key, onDone) {
     if (done) return; done = true;
     const ok = items.every((it,i) => it.order === i + 1);
     const sorted = [...d.items].sort((a,b) => a.order - b.order).map(it => it.text).join(" → ");
-    showFeedback(card.querySelector("#fbx-"+key), ok,
-      ok ? "Perfect order!" : "Not quite. Correct order: " + sorted);
-    onDone();
+    const fbEl = card.querySelector("#fbx-"+key);
+    showFeedback(fbEl, ok, ok ? "Perfect order!" : "Not quite. Correct order: " + sorted);
+    if (ok) { onDone(); } else {
+      showRetry(fbEl, () => { done = false; });
+    }
   };
   refresh();
 }
@@ -3035,9 +3076,11 @@ function actHotspot(container, raw, key, onDone) {
   const found = new Set();
   card.innerHTML = `<div class="act-q">${d.question}</div>
     <div class="hotspot-wrap" id="hsw-${key}">
-      ${d.imageSrc
-        ? `<img src="${d.imageSrc}" style="max-width:100%;border-radius:12px;display:block">`
-        : `<div class="hotspot-bg"><span style="font-size:2.5rem">🖥️</span><span>Click the numbered spots</span><small style="opacity:.6">(add imageSrc to lesson data for a real screenshot)</small></div>`}
+      ${d.svgContent
+        ? d.svgContent
+        : d.imageSrc
+          ? `<img src="${d.imageSrc}" style="max-width:100%;border-radius:12px;display:block">`
+          : `<div class="hotspot-bg"><span style="font-size:2.5rem">🖥️</span><span>Click the numbered spots</span><small style="opacity:.6">(add imageSrc to lesson data for a real screenshot)</small></div>`}
     </div>
     <div class="hs-status" id="hs-status-${key}">Found: 0 of ${d.hotspots.length}</div>
     <div id="fbx-${key}"></div>`;
@@ -3117,6 +3160,14 @@ function showFeedback(el, ok, explanation) {
         ${explanation ? `<div class="fb-body">${explanation}</div>` : ""}
       </div>
     </div>`;
+}
+
+function showRetry(fbEl, resetFn) {
+  const btn = document.createElement("button");
+  btn.className = "btn-retry";
+  btn.textContent = "↩ Try Again";
+  btn.onclick = () => { fbEl.innerHTML = ""; resetFn(); };
+  fbEl.appendChild(btn);
 }
 
 // ──────────────────────────────────────────────────────────────
