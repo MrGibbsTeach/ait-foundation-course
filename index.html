@@ -1278,10 +1278,316 @@ const COURSE_DATA = {
           title: "Desktop Publishing",
           color: "#6D2E46",
           lessons: [
-            { id: "e11_2_l1", title: "Introduction to Desktop Publishing", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_2_l2", title: "Design Principles",                  estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_2_l3", title: "Working with Text and Images",       estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_2_l4", title: "Creating a Publication",             estimatedMinutes: 30, parts: { learn: [], tryIt: {}, check: [] } }
+
+            // ── LESSON 1 ─────────────────────────────────────────────
+            {
+              id: "e11_2_l1",
+              title: "What is Desktop Publishing?",
+              estimatedMinutes: 15,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Desktop Publishing (DTP) makes layouts with text and images. 🖨️",
+                    body: `You arrange words and pictures on a page.<br><br>The result can be printed or shared online.`
+                  },
+                  {
+                    type: "text",
+                    heading: "DTP software helps you create many things. 📄",
+                    body: `<strong>Brochures</strong> — folded leaflets about a topic or event.<br><strong>Calendars</strong> — yearly planners with dates and images.<br><strong>Cards</strong> — greetings or invitations for special occasions.<br><strong>Portfolios</strong> — a collection of your best work.`
+                  },
+                  {
+                    type: "text",
+                    heading: "There are popular DTP programs you can use. 💻",
+                    body: `<strong>Microsoft Publisher</strong> — comes with Microsoft Office.<br><strong>Canva</strong> — a free online tool for everyone.`
+                  },
+                  {
+                    type: "text",
+                    heading: "A layout is where you put things on the page. 📐",
+                    body: `You decide where text and images go.<br><br>A good layout is easy to read and looks great.`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each DTP product to its description. 🧩",
+                  pairs: [
+                    { left: "Brochure",   right: "A folded leaflet about a topic or event"     },
+                    { left: "Calendar",   right: "A yearly planner with dates and images"       },
+                    { left: "Card",       right: "A greeting or invitation for a special occasion" },
+                    { left: "Portfolio",  right: "A collection of your best work"               }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does DTP stand for? 🖨️",
+                    options: [
+                      { text: "Digital Text Processing",   correct: false },
+                      { text: "Desktop Publishing",        correct: true  },
+                      { text: "Design and Type Program",   correct: false }
+                    ],
+                    explanation: "DTP stands for Desktop Publishing. It is software used to create layouts with text and images."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which of these is a DTP program? 💻",
+                    options: [
+                      { text: "Microsoft Excel",  correct: false },
+                      { text: "Canva",            correct: true  },
+                      { text: "Google Chrome",    correct: false }
+                    ],
+                    explanation: "Canva is a popular DTP tool. Microsoft Publisher is another example."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is a layout? 📐",
+                    options: [
+                      { text: "A font style",                         correct: false },
+                      { text: "Where you place text and images on a page", correct: true  },
+                      { text: "A type of printer",                    correct: false }
+                    ],
+                    explanation: "A layout is the arrangement of text and images on your page. A good layout is clear and easy to read."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 2 ─────────────────────────────────────────────
+            {
+              id: "e11_2_l2",
+              title: "Using Templates",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "A template is a ready-made design. 🎨",
+                    body: `You fill it in with your own words and photos.<br><br>Templates save you a lot of time.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 1: Open your DTP software. 💻",
+                    body: `Open Microsoft Publisher or Canva.<br><br>Make sure you are logged in if needed.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 2: Choose a template. 🎨",
+                    body: `Browse the templates and pick one you like.<br><br>Choose a template that suits your project.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 3: Click a text frame and type your words. 📝",
+                    body: `Click on any text area to select it.<br><br>Delete the placeholder text and type your own.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 4: Click an image frame and add your photo. 🖼️",
+                    body: `Click on the image area to select it.<br><br>Upload your own photo to replace the placeholder.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Step 5: Save your finished document. 💾",
+                    body: `Save your work so you do not lose it.<br><br>You can save as a PDF to share or print.`
+                  }
+                ],
+                tryIt: {
+                  type: "ordering",
+                  question: "Put these steps in the correct order for using a template. 🎨",
+                  items: [
+                    { text: "Open your DTP software",                  order: 1 },
+                    { text: "Choose a template",                       order: 2 },
+                    { text: "Click a text frame and type your words",  order: 3 },
+                    { text: "Add your photo to the image frame",       order: 4 },
+                    { text: "Save your finished document",             order: 5 }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is a template? 🎨",
+                    options: [
+                      { text: "A blank white page",              correct: false },
+                      { text: "A ready-made design you fill in", correct: true  },
+                      { text: "A type of printer setting",       correct: false }
+                    ],
+                    explanation: "A template is a ready-made design. You replace the placeholder text and images with your own."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What should you do after choosing a template? 📝",
+                    options: [
+                      { text: "Save the document immediately",              correct: false },
+                      { text: "Click a text frame and type your words",     correct: true  },
+                      { text: "Print the document straight away",           correct: false }
+                    ],
+                    explanation: "After choosing a template, click a text frame and replace the placeholder text with your words."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is the last step when using a template? 💾",
+                    options: [
+                      { text: "Open the software",    correct: false },
+                      { text: "Choose a template",    correct: false },
+                      { text: "Save your document",   correct: true  }
+                    ],
+                    explanation: "Always save your work last. You can save as a PDF to share or print your document."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 3 ─────────────────────────────────────────────
+            {
+              id: "e11_2_l3",
+              title: "Image Frames and Text Frames",
+              estimatedMinutes: 25,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "An image frame holds a photo or picture. 🖼️",
+                    body: `Image frames have a picture icon inside.<br><br>Click the frame to add or change the image.`
+                  },
+                  {
+                    type: "text",
+                    heading: "A text frame holds words. 📝",
+                    body: `Text frames usually have placeholder text inside.<br><br>Click the frame and type to add your words.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Click a frame to select it. 🖱️",
+                    body: `A selected frame shows handles around its edges.<br><br>Then you can add or edit the content inside.`
+                  },
+                  {
+                    type: "text",
+                    heading: "You can move and resize any frame. ↔️",
+                    body: `Drag the frame to move it anywhere on the page.<br><br>Drag a corner handle to make it bigger or smaller.`
+                  }
+                ],
+                tryIt: {
+                  type: "hotspot",
+                  question: "Click each frame on the layout. Find all 4 frames! 🖼️📝",
+                  imageSrc: null,
+                  hotspots: [
+                    { id: "f1", label: "Image frame — holds a photo 🖼️",     x: 20, y: 30 },
+                    { id: "f2", label: "Text frame — holds words 📝",         x: 70, y: 30 },
+                    { id: "f3", label: "Image frame — holds a photo 🖼️",     x: 20, y: 72 },
+                    { id: "f4", label: "Text frame — holds words 📝",         x: 70, y: 72 }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does an image frame hold? 🖼️",
+                    options: [
+                      { text: "Words and sentences",     correct: false },
+                      { text: "A photo or picture",      correct: true  },
+                      { text: "A table of numbers",      correct: false }
+                    ],
+                    explanation: "An image frame holds a photo or picture. Click it to add or replace the image."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "How do you select a frame? 🖱️",
+                    options: [
+                      { text: "Press the Delete key",           correct: false },
+                      { text: "Click on it",                    correct: true  },
+                      { text: "Right-click and choose Print",   correct: false }
+                    ],
+                    explanation: "Click a frame to select it. You will see handles appear around the edges."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "How do you resize a frame? ↔️",
+                    options: [
+                      { text: "Double-click the frame",              correct: false },
+                      { text: "Drag a corner handle",                correct: true  },
+                      { text: "Press the Spacebar",                  correct: false }
+                    ],
+                    explanation: "Drag a corner handle to resize a frame. Drag from the middle to move it instead."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 4 ─────────────────────────────────────────────
+            {
+              id: "e11_2_l4",
+              title: "Editing Tools",
+              estimatedMinutes: 30,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Insert adds new content to your page. ➕",
+                    body: `Use Insert to add a new photo, text box, or shape.<br><br>Find it in the menu at the top of the screen.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Rotate turns an object to a different angle. 🔄",
+                    body: `Drag the rotate handle above the object.<br><br>You can turn images and text frames sideways.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Resize makes an object bigger or smaller. ↔️",
+                    body: `Drag a corner handle to change the size.<br><br>Hold Shift to keep the shape the same.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Order moves an object in front of or behind others. 📚",
+                    body: `Right-click and choose Bring to Front or Send to Back.<br><br>This fixes objects that hide behind each other.`
+                  },
+                  {
+                    type: "text",
+                    heading: "A colour scheme picks matching colours for the page. 🎨",
+                    body: `Choose a colour scheme so all colours match.<br><br>This makes your document look professional.`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each problem to the correct editing tool. 🛠️",
+                  pairs: [
+                    { left: "I want to make my photo bigger",        right: "Resize"        },
+                    { left: "I want to turn my image sideways",      right: "Rotate"        },
+                    { left: "My text is hiding behind the photo",    right: "Order"         },
+                    { left: "I want all my colours to match",        right: "Colour scheme" }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "Which tool adds a new photo to your page? ➕",
+                    options: [
+                      { text: "Rotate",  correct: false },
+                      { text: "Order",   correct: false },
+                      { text: "Insert",  correct: true  }
+                    ],
+                    explanation: "Use Insert to add new content. Find it in the menu at the top of the screen."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Your text is hidden behind a photo. Which tool fixes this? 📚",
+                    options: [
+                      { text: "Resize",  correct: false },
+                      { text: "Order",   correct: true  },
+                      { text: "Rotate",  correct: false }
+                    ],
+                    explanation: "Order moves objects in front of or behind each other. Use Bring to Front or Send to Back."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which tool makes sure all your colours match? 🎨",
+                    options: [
+                      { text: "Colour scheme",  correct: true  },
+                      { text: "Rotate",         correct: false },
+                      { text: "Insert",         correct: false }
+                    ],
+                    explanation: "A colour scheme picks matching colours for your whole page. This makes your work look professional."
+                  }
+                ]
+              }
+            }
+
           ]
         },
         {
@@ -1289,10 +1595,319 @@ const COURSE_DATA = {
           title: "Digital Photography",
           color: "#1E2761",
           lessons: [
-            { id: "e11_4_l1", title: "Introduction to Digital Photography", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_4_l2", title: "Camera Settings and Techniques",      estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_4_l3", title: "Composition and Lighting",            estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
-            { id: "e11_4_l4", title: "Editing Your Photos",                 estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } }
+
+            // ── LESSON 1 ─────────────────────────────────────────────
+            {
+              id: "e11_4_l1",
+              title: "Using Your Camera",
+              estimatedMinutes: 15,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Resolution is how sharp your photo is. 📷",
+                    body: `High resolution means more detail in the photo.<br><br>Always use the highest resolution setting you can.`
+                  },
+                  {
+                    type: "text",
+                    heading: "File format is how your photo is saved. 💾",
+                    body: `<strong>JPEG</strong> — small file size, great for sharing online.<br><strong>PNG</strong> — larger file, keeps more detail.<br><br>JPEG is the most common format for photos.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Focus makes your subject sharp and clear. 🎯",
+                    body: `Tap the screen to focus on your subject.<br><br>If the subject is blurry, the photo will not look good.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Exposure controls how bright the photo is. ☀️",
+                    body: `Too much light makes a washed-out photo.<br><br>Too little light makes a dark, hard-to-see photo.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Use flash wisely. ⚡",
+                    body: `Turn flash on in dark rooms to light your subject.<br><br>Turn flash off in bright light — it can wash things out.`
+                  }
+                ],
+                tryIt: {
+                  type: "dragDrop",
+                  question: "Sort each photo scenario into Good Photo or Bad Photo. 📷",
+                  items: [
+                    "The subject is in focus and well lit",
+                    "The photo is sharp with natural light",
+                    "The photo is very dark and blurry",
+                    "The photo is washed out from too much flash",
+                    "The subject is tiny and hard to see"
+                  ],
+                  categories: [
+                    { label: "Good Photo ✅", accepts: ["The subject is in focus and well lit", "The photo is sharp with natural light"] },
+                    { label: "Bad Photo ❌",  accepts: ["The photo is very dark and blurry", "The photo is washed out from too much flash", "The subject is tiny and hard to see"] }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does resolution mean? 📷",
+                    options: [
+                      { text: "How colourful a photo is",    correct: false },
+                      { text: "How sharp a photo is",        correct: true  },
+                      { text: "How big the photo file is",   correct: false }
+                    ],
+                    explanation: "Resolution means how sharp and detailed a photo is. Higher resolution means more detail."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "When should you use flash? ⚡",
+                    options: [
+                      { text: "In bright sunlight outside",   correct: false },
+                      { text: "In a dark room",               correct: true  },
+                      { text: "Every time you take a photo",  correct: false }
+                    ],
+                    explanation: "Use flash in dark rooms to light your subject. Turn it off in bright conditions — it can ruin the photo."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What is the most common file format for photos? 💾",
+                    options: [
+                      { text: "MP3",   correct: false },
+                      { text: "PDF",   correct: false },
+                      { text: "JPEG",  correct: true  }
+                    ],
+                    explanation: "JPEG is the most common photo format. It has a small file size and is great for sharing online."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 2 ─────────────────────────────────────────────
+            {
+              id: "e11_4_l2",
+              title: "Composition Rules",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "The Rule of Thirds divides the frame into 9 boxes. 📐",
+                    body: `Imagine a 3×3 grid over your photo.<br><br>Place your subject on one of the four cross points.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Leading lines guide the viewer's eye. 🛤️",
+                    body: `Use natural lines like roads, fences, or rivers.<br><br>The lines lead the eye toward your subject.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Framing uses objects to surround your subject. 🏠",
+                    body: `Use a doorway, window, or trees as a frame.<br><br>This draws attention to the person or object inside.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Colour contrast makes your subject pop. 🌈",
+                    body: `Place a bright subject against a darker background.<br><br>The contrast helps your subject stand out clearly.`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each composition rule to its description. 📐",
+                  pairs: [
+                    { left: "Rule of Thirds",   right: "Place subject on a grid cross point"          },
+                    { left: "Leading lines",    right: "Use natural lines to guide the viewer's eye"  },
+                    { left: "Framing",          right: "Surround your subject with objects"           },
+                    { left: "Colour contrast",  right: "Put a bright subject on a darker background"  }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What does the Rule of Thirds suggest? 📐",
+                    options: [
+                      { text: "Always centre your subject",               correct: false },
+                      { text: "Place your subject on a grid cross point", correct: true  },
+                      { text: "Take three photos of everything",          correct: false }
+                    ],
+                    explanation: "The Rule of Thirds divides the frame into a 3×3 grid. Place your subject on one of the cross points."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What are leading lines? 🛤️",
+                    options: [
+                      { text: "Lines of text in the photo",                     correct: false },
+                      { text: "Natural lines that guide the eye to the subject", correct: true  },
+                      { text: "The border around your photo",                    correct: false }
+                    ],
+                    explanation: "Leading lines are natural lines like roads or rivers. They guide the viewer's eye toward your subject."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Which technique uses a doorway or window around your subject? 🏠",
+                    options: [
+                      { text: "Rule of Thirds",   correct: false },
+                      { text: "Leading lines",    correct: false },
+                      { text: "Framing",          correct: true  }
+                    ],
+                    explanation: "Framing uses objects like doorways or trees to surround your subject. It draws the eye inward."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 3 ─────────────────────────────────────────────
+            {
+              id: "e11_4_l3",
+              title: "Editing Your Photos",
+              estimatedMinutes: 20,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Crop cuts the edges to focus on your subject. ✂️",
+                    body: `Drag the crop handles to remove unwanted areas.<br><br>This makes your subject fill more of the frame.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Brightness makes the photo lighter or darker. ☀️",
+                    body: `Increase brightness if the photo is too dark.<br><br>Decrease brightness if the photo is too washed out.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Contrast makes light and dark areas stand out more. 🌓",
+                    body: `High contrast makes colours look bold and punchy.<br><br>Low contrast makes everything look flat and dull.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Rotate straightens a crooked photo. 🔄",
+                    body: `Use rotate to fix a photo taken at an angle.<br><br>Turn it until the horizon looks straight.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Red eye removal fixes red eyes from flash. 👁️",
+                    body: `Flash can make eyes appear red in photos.<br><br>The red eye tool removes this effect automatically.`
+                  }
+                ],
+                tryIt: {
+                  type: "matching",
+                  question: "Match each photo problem to the correct editing tool. 🛠️",
+                  pairs: [
+                    { left: "Too much background in the shot",   right: "Crop"             },
+                    { left: "Photo is too dark",                 right: "Brightness"       },
+                    { left: "Photo is sideways",                 right: "Rotate"           },
+                    { left: "Subject has red eyes from flash",   right: "Red eye removal"  }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "Which tool removes unwanted edges from a photo? ✂️",
+                    options: [
+                      { text: "Brightness",  correct: false },
+                      { text: "Crop",        correct: true  },
+                      { text: "Contrast",    correct: false }
+                    ],
+                    explanation: "Crop cuts the edges of a photo. Use it to remove distracting backgrounds and focus on your subject."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "Your photo looks flat — light and dark look the same. Which tool helps? 🌓",
+                    options: [
+                      { text: "Rotate",    correct: false },
+                      { text: "Crop",      correct: false },
+                      { text: "Contrast",  correct: true  }
+                    ],
+                    explanation: "Contrast makes the light areas lighter and the dark areas darker. This makes the photo look more vivid."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What causes red eye in a photo? 👁️",
+                    options: [
+                      { text: "The brightness setting is too high",  correct: false },
+                      { text: "The flash reflecting in the eyes",    correct: true  },
+                      { text: "The photo was taken sideways",        correct: false }
+                    ],
+                    explanation: "Flash can reflect inside the eye and cause red eye. Use the red eye removal tool to fix it."
+                  }
+                ]
+              }
+            },
+
+            // ── LESSON 4 ─────────────────────────────────────────────
+            {
+              id: "e11_4_l4",
+              title: "Being Responsible with Photos",
+              estimatedMinutes: 25,
+              parts: {
+                learn: [
+                  {
+                    type: "text",
+                    heading: "Defamation means sharing a false photo that hurts someone. ⚠️",
+                    body: `This can seriously damage a person's reputation.<br><br>Defamation is against the law in Australia.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Bias means only showing one side of the story. 📊",
+                    body: `Choosing only flattering or unfair photos is bias.<br><br>Try to show photos that are fair and honest.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Always ask permission before sharing someone's photo. 🤝",
+                    body: `Everyone has the right to control their own image.<br><br>Ask first — even if it is a friend.`
+                  },
+                  {
+                    type: "text",
+                    heading: "Think before you post. 🤔",
+                    body: `Once a photo is online, it can spread quickly.<br><br>You may not be able to take it back.`
+                  }
+                ],
+                tryIt: {
+                  type: "dragDrop",
+                  question: "Sort each action into the Right Thing or Wrong Thing. ✅❌",
+                  items: [
+                    "You ask a friend before posting their photo",
+                    "You choose photos that fairly show both sides",
+                    "You delete a photo when someone asks you to",
+                    "You edit a photo to make someone look bad",
+                    "You share a photo that says something false about someone"
+                  ],
+                  categories: [
+                    { label: "Right Thing ✅", accepts: ["You ask a friend before posting their photo", "You choose photos that fairly show both sides", "You delete a photo when someone asks you to"] },
+                    { label: "Wrong Thing ❌", accepts: ["You edit a photo to make someone look bad", "You share a photo that says something false about someone"] }
+                  ]
+                },
+                check: [
+                  {
+                    type: "multipleChoice",
+                    question: "What is defamation? ⚠️",
+                    options: [
+                      { text: "Editing a photo with filters",                   correct: false },
+                      { text: "Sharing a false photo that hurts someone",       correct: true  },
+                      { text: "Taking a photo without a flash",                 correct: false }
+                    ],
+                    explanation: "Defamation means sharing false content that damages someone's reputation. It is against the law."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What should you do before posting a photo of someone? 🤝",
+                    options: [
+                      { text: "Edit it to look better",           correct: false },
+                      { text: "Ask their permission first",       correct: true  },
+                      { text: "Add a funny caption",              correct: false }
+                    ],
+                    explanation: "Always ask before sharing someone else's photo. Everyone has the right to control their own image."
+                  },
+                  {
+                    type: "multipleChoice",
+                    question: "What does photo bias mean? 📊",
+                    options: [
+                      { text: "Taking blurry photos",                    correct: false },
+                      { text: "Only showing photos that favour one side", correct: true  },
+                      { text: "Using too many filters",                   correct: false }
+                    ],
+                    explanation: "Bias means only choosing photos that show one side unfairly. Always try to be fair and honest."
+                  }
+                ]
+              }
+            }
+
           ]
         }
       ]
