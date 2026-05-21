@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIT Foundation Course</title>
+<style>
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root {
+  --bg: #f0f4f8;
+  --white: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #5f6b7a;
+  --border: #d8e0e8;
+  --primary: #1a73e8;
+  --success: #1e8c45;
+  --error: #c0392b;
+  --radius: 14px;
+  --shadow: 0 2px 10px rgba(0,0,0,0.10);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.16);
+  --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --base: 18px;
+  --tap: 48px;
+}
+
+/* ── RESET ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: var(--base); font-family: var(--font); -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+button { font-family: inherit; font-size: 1rem; border: none; cursor: pointer;
+  transition: transform .15s, opacity .15s, box-shadow .15s; }
+button:active { transform: scale(.97); }
+h1 { font-size: 1.75rem; line-height: 1.2; }
+h2 { font-size: 1.35rem; line-height: 1.3; }
+h3 { font-size: 1.1rem; }
+p  { line-height: 1.6; }
+
+/* ── SCREEN SYSTEM ──────────────────────────────────────────── */
+.screen { display: none; flex-direction: column; min-height: 100vh; }
+.screen.active { display: flex; }
+#screen-lesson.active { height: 100vh; min-height: unset; overflow: hidden; }
+
+/* ── WELCOME ────────────────────────────────────────────────── */
+#screen-welcome {
+  align-items: center; justify-content: center; text-align: center;
+  padding: 48px 28px;
+  background: linear-gradient(150deg, #0d1b2a 0%, #1a3050 60%, #0f3460 100%);
+  color: #fff;
+}
+.welcome-logo {
+  width: 96px; height: 96px; border-radius: 24px;
+  background: rgba(255,255,255,.12); display: flex; align-items: center;
+  justify-content: center; font-size: 3rem; margin: 0 auto 28px;
+}
+.welcome-title { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+.welcome-sub   { font-size: 1rem; opacity: .75; margin-bottom: 44px; max-width: 360px; }
+.btn-start {
+  background: var(--primary); color: #fff;
+  padding: 16px 52px; font-size: 1.05rem; font-weight: 700;
+  border-radius: 50px; min-height: var(--tap);
+  box-shadow: 0 4px 20px rgba(26,115,232,.45);
+}
+.btn-start:hover { box-shadow: 0 6px 28px rgba(26,115,232,.6); }
+.welcome-note { margin-top: 20px; font-size: .85rem; opacity: .5; }
+.btn-text-sm {
+  background: none; color: rgba(255,255,255,.45); font-size: .8rem;
+  margin-top: 12px; text-decoration: underline; padding: 8px; min-height: auto;
+}
+.btn-text-sm:hover { color: #fff; }
+
+/* ── SHARED HERO HEADER ─────────────────────────────────────── */
+.hero {
+  background: linear-gradient(150deg, #0d1b2a, #1a3050);
+  color: #fff; padding: 20px 24px 44px;
+}
+.hero-back {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.12); border-radius: 50px;
+  padding: 8px 16px; font-size: .9rem; font-weight: 600; color: #fff;
+  margin-bottom: 20px; min-height: 40px;
+}
+.hero-back:hover { background: rgba(255,255,255,.2); }
+.hero h1 { font-size: 1.5rem; margin-bottom: 6px; }
+.hero p  { opacity: .75; font-size: .95rem; }
+
+/* ── GRID CARDS ─────────────────────────────────────────────── */
+.cards-grid {
+  padding: 0 20px 32px; margin-top: -24px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+  gap: 16px;
+}
+@media(min-width:900px){ .cards-grid { max-width: 960px; margin-left: auto; margin-right: auto; } }
+
+/* ── UNIT CARDS ─────────────────────────────────────────────── */
+.unit-card {
+  background: var(--white); border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow); cursor: pointer; border-left: 6px solid var(--primary);
+  transition: transform .2s, box-shadow .2s;
+}
+.unit-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.unit-card.coming-soon { cursor: default; opacity: .58; border-left-color: #bbb; }
+.unit-card.coming-soon:hover { transform: none; box-shadow: var(--shadow); }
+.unit-num { font-size: .78rem; font-weight: 700; color: var(--primary);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.unit-card.coming-soon .unit-num { color: #aaa; }
+.unit-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.unit-card p  { font-size: .88rem; color: var(--text-muted); margin-bottom: 12px; }
+.badge-soon { display: inline-block; background: #eee; color: #999;
+  padding: 3px 12px; border-radius: 20px; font-size: .78rem; }
+.progress-bar-wrap { background: #e8ecf0; border-radius: 10px; height: 6px; overflow: hidden; margin-top: 10px; }
+.progress-bar-fill { height: 100%; border-radius: 10px; background: var(--primary); transition: width .4s; }
+.progress-label { font-size: .78rem; color: var(--text-muted); margin-top: 5px; }
+
+/* ── MODULE CARDS ───────────────────────────────────────────── */
+.module-card {
+  background: var(--white); border-radius: var(--radius);
+  box-shadow: var(--shadow); cursor: pointer; overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
+}
+.module-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.module-card.locked { cursor: default; opacity: .6; }
+.module-card.locked:hover { transform: none; box-shadow: var(--shadow); }
+.module-card-top { padding: 20px; color: #fff; }
+.module-code { font-size: .8rem; font-weight: 700; opacity: .8; margin-bottom: 4px; }
+.module-card-top h3 { font-size: 1.05rem; display: flex; justify-content: space-between; align-items: center; }
+.module-card-body { padding: 16px 20px; }
+.module-lesson-ct { font-size: .88rem; color: var(--text-muted); margin-bottom: 10px; }
+.module-progress-fill { height: 100%; border-radius: 10px; transition: width .4s; }
+.module-progress-text { font-size: .82rem; color: var(--text-muted); margin-top: 6px; }
+
+/* ── LESSONS LIST ───────────────────────────────────────────── */
+.lessons-list {
+  padding: 0 20px 32px; margin-top: -24px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+@media(min-width:900px){ .lessons-list { max-width: 720px; margin-left: auto; margin-right: auto; } }
+
+.lesson-row {
+  background: var(--white); border-radius: var(--radius); padding: 16px 20px;
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px;
+  cursor: pointer; transition: transform .15s, box-shadow .15s;
+  min-height: var(--tap);
+}
+.lesson-row:hover { transform: translateX(5px); box-shadow: var(--shadow-lg); }
+.lesson-row.locked { cursor: default; opacity: .55; }
+.lesson-row.locked:hover { transform: none; box-shadow: var(--shadow); }
+.lesson-row.done { border-left: 4px solid var(--success); }
+.lesson-icon { font-size: 1.3rem; width: 36px; text-align: center; flex-shrink: 0; }
+.lesson-info { flex: 1; }
+.lesson-info h4 { font-size: .98rem; margin-bottom: 2px; }
+.lesson-info small { font-size: .82rem; color: var(--text-muted); }
+.lesson-arrow { font-size: 1rem; color: var(--text-muted); flex-shrink: 0; }
+
+/* ── LESSON SCREEN ──────────────────────────────────────────── */
+.lesson-header {
+  color: #fff; flex-shrink: 0;
+  position: sticky; top: 0; z-index: 90;
+}
+.lesson-header-top {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px 6px;
+}
+.lesson-header-top h2 { font-size: .95rem; flex: 1; line-height: 1.3; }
+.lesson-header-back {
+  background: rgba(255,255,255,.15); color: #fff; border-radius: 50px;
+  padding: 6px 12px; font-size: .82rem; font-weight: 600; flex-shrink: 0; min-height: 36px;
+}
+.lesson-header-back:hover { background: rgba(255,255,255,.25); }
+
+.lesson-tabs {
+  display: flex; padding: 4px 16px 0; gap: 4px;
+}
+.ltab {
+  flex: 1; padding: 9px 4px; border-radius: 10px 10px 0 0;
+  background: rgba(255,255,255,.15); color: rgba(255,255,255,.7);
+  font-size: .88rem; font-weight: 600; min-height: 42px;
+  border: none; transition: background .2s, color .2s;
+}
+.ltab.active { background: var(--bg); color: var(--text); }
+
+.lesson-body { flex: 1; overflow-y: auto; padding: 20px; }
+@media(min-width:768px){ .lesson-body { max-width: 720px; margin: 0 auto; width: 100%; } }
+
+.lesson-footer {
+  background: var(--white); padding: 14px 20px;
+  display: flex; gap: 12px; flex-shrink: 0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,.07);
+}
+.btn-nav {
+  flex: 1; padding: 13px; border-radius: var(--radius);
+  font-size: .95rem; font-weight: 600; min-height: var(--tap);
+}
+.btn-nav-prev { background: #e8f0fe; color: var(--primary); }
+.btn-nav-next { background: var(--primary); color: #fff; }
+.btn-nav:disabled { opacity: .35; cursor: default; }
+
+/* ── PLACEHOLDER ────────────────────────────────────────────── */
+.placeholder {
+  background: var(--white); border-radius: var(--radius); padding: 44px 28px;
+  text-align: center; box-shadow: var(--shadow);
+}
+.placeholder-icon { font-size: 3rem; margin-bottom: 14px; }
+.placeholder h3 { margin-bottom: 8px; }
+.placeholder p { color: var(--text-muted); font-size: .92rem; }
+
+/* ── ACTIVITY CARDS ─────────────────────────────────────────── */
+.act-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px;
+}
+.act-q { font-size: 1rem; font-weight: 600; line-height: 1.55; margin-bottom: 20px; }
+.act-hint { font-size: .88rem; color: var(--text-muted); font-style: italic; margin-bottom: 14px; }
+
+/* Multiple Choice */
+.mc-opts { display: flex; flex-direction: column; gap: 10px; }
+.mc-opt {
+  padding: 13px 18px; border: 2px solid var(--border); border-radius: 11px;
+  cursor: pointer; text-align: left; background: var(--white);
+  display: flex; align-items: center; gap: 12px; min-height: var(--tap);
+  font-size: .97rem; transition: border-color .15s, background .15s;
+}
+.mc-opt:hover:not(:disabled) { border-color: var(--primary); background: #f0f4ff; }
+.mc-opt.sel  { border-color: var(--primary); background: #e8f0fe; }
+.mc-opt.ok   { border-color: var(--success); background: #e6f4ec; color: var(--success); font-weight: 600; }
+.mc-opt.bad  { border-color: var(--error);   background: #fdecea; color: var(--error); }
+.mc-letter   { font-weight: 700; color: var(--text-muted); width: 22px; flex-shrink: 0; }
+
+/* True / False */
+.tf-opts { display: flex; gap: 12px; }
+.tf-btn {
+  flex: 1; padding: 18px; border: 2px solid var(--border); border-radius: 11px;
+  font-size: 1.05rem; font-weight: 600; background: var(--white);
+  min-height: 72px; transition: border-color .15s, background .15s;
+}
+.tf-btn:hover:not(:disabled) { border-color: var(--primary); background: #f0f4ff; }
+.tf-btn.ok  { border-color: var(--success); background: #e6f4ec; color: var(--success); }
+.tf-btn.bad { border-color: var(--error);   background: #fdecea; color: var(--error); }
+
+/* Fill Blank */
+.fb-input {
+  width: 100%; padding: 13px 16px; font-size: 1rem; font-family: inherit;
+  border: 2px solid var(--border); border-radius: 11px; min-height: var(--tap);
+  transition: border-color .15s; margin-bottom: 12px;
+}
+.fb-input:focus { outline: none; border-color: var(--primary); }
+.fb-input.ok  { border-color: var(--success); background: #e6f4ec; }
+.fb-input.bad { border-color: var(--error);   background: #fdecea; }
+
+/* Matching */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.match-item {
+  padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px;
+  cursor: pointer; background: var(--white); font-size: .92rem;
+  min-height: var(--tap); display: flex; align-items: center;
+  transition: border-color .15s, background .15s;
+}
+.match-item:hover:not(.done) { border-color: var(--primary); background: #f0f4ff; }
+.match-item.sel  { border-color: var(--primary); background: #e8f0fe; }
+.match-item.done { border-color: var(--success); background: #e6f4ec; color: var(--success);
+  font-weight: 600; cursor: default; }
+.match-col-label { font-size: .75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--text-muted); margin-bottom: 6px; padding: 0 2px; }
+
+/* Ordering */
+.ord-list { display: flex; flex-direction: column; gap: 8px; }
+.ord-item {
+  padding: 13px 16px; border: 2px solid var(--border); border-radius: 11px;
+  background: var(--white); display: flex; align-items: center; gap: 10px;
+  min-height: var(--tap); font-size: .95rem;
+}
+.ord-handle { color: var(--text-muted); font-size: 1.1rem; flex-shrink: 0; }
+.ord-text { flex: 1; }
+.ord-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+.ord-btn {
+  background: #eef2f7; border-radius: 6px; padding: 4px 10px;
+  font-size: .85rem; min-height: 28px; line-height: 1;
+}
+.ord-btn:hover { background: #dce3ed; }
+
+/* Drag-and-Drop */
+.dnd-source { margin-bottom: 20px; }
+.dnd-chips  { display: flex; flex-wrap: wrap; gap: 8px; min-height: 44px; }
+.dnd-chip {
+  padding: 10px 18px; background: #e8f0fe; border: 2px solid var(--primary);
+  border-radius: 50px; cursor: pointer; font-size: .92rem; min-height: var(--tap);
+  display: flex; align-items: center; transition: background .15s, transform .15s;
+}
+.dnd-chip:hover { background: #c5d9ff; }
+.dnd-chip.selected { background: var(--primary); color: #fff; transform: scale(1.05); }
+.dnd-zones { display: flex; flex-direction: column; gap: 12px; }
+.dnd-zone {
+  border: 2px dashed var(--border); border-radius: 12px; padding: 14px 16px; min-height: 80px;
+  transition: border-color .15s, background .15s; cursor: pointer;
+}
+.dnd-zone:hover { border-color: var(--primary); background: #f5f8ff; }
+.dnd-zone-label { font-size: .8rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--text-muted); margin-bottom: 8px; }
+.dnd-zone-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dnd-placed {
+  padding: 8px 14px; background: #e6f4ec; border: 2px solid var(--success);
+  border-radius: 50px; font-size: .88rem; display: flex; align-items: center; gap: 6px;
+  cursor: pointer;
+}
+.dnd-placed:hover { background: #d0ebd8; }
+
+/* Short Answer */
+.sa-textarea {
+  width: 100%; padding: 13px 16px; font-size: 1rem; font-family: inherit;
+  border: 2px solid var(--border); border-radius: 11px; resize: vertical;
+  min-height: 120px; transition: border-color .15s; margin-bottom: 6px;
+}
+.sa-textarea:focus { outline: none; border-color: var(--primary); }
+.sa-word-count { font-size: .8rem; color: var(--text-muted); margin-bottom: 12px; }
+
+/* Hotspot */
+.hotspot-wrap { position: relative; display: inline-block; max-width: 100%; width: 100%; }
+.hotspot-bg {
+  width: 100%; height: 220px; border-radius: 12px;
+  background: linear-gradient(135deg, #dce8f5, #c3d8ef);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--primary); font-size: .9rem;
+}
+.hs-point {
+  position: absolute; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--primary); border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: .88rem;
+  transform: translate(-50%, -50%); transition: transform .2s, background .2s;
+}
+.hs-point:hover { transform: translate(-50%,-50%) scale(1.2); }
+.hs-point.found { background: var(--success); }
+.hs-status { font-size: .88rem; color: var(--text-muted); margin-top: 10px; }
+
+/* Star Rating */
+.stars-wrap { text-align: center; margin-bottom: 4px; }
+.stars { display: flex; justify-content: center; gap: 4px; margin: 12px 0 6px; }
+.star-btn {
+  background: none; font-size: 2.4rem; color: #d0d8e0; min-height: var(--tap);
+  min-width: var(--tap); transition: color .15s, transform .15s;
+}
+.star-btn:hover, .star-btn.on { color: #f5c518; }
+.star-btn.on { transform: scale(1.15); }
+.star-label { font-size: .88rem; color: var(--text-muted); min-height: 22px; margin-bottom: 12px; }
+
+/* Submit button */
+.btn-submit {
+  width: 100%; padding: 15px; border-radius: 11px;
+  background: var(--primary); color: #fff; font-weight: 700;
+  font-size: .97rem; min-height: var(--tap); margin-top: 14px;
+  transition: background .15s, opacity .15s;
+}
+.btn-submit:hover:not(:disabled) { background: #1558c0; }
+.btn-submit:disabled { background: #b0bec5; cursor: default; }
+
+/* Feedback */
+.feedback {
+  border-radius: 11px; padding: 14px 18px; margin-top: 14px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.feedback.ok  { background: #e6f4ec; border: 2px solid var(--success); }
+.feedback.bad { background: #fdecea; border: 2px solid var(--error); }
+.fb-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1; }
+.fb-title { font-weight: 700; margin-bottom: 3px; font-size: .97rem; }
+.fb-title.ok  { color: var(--success); }
+.fb-title.bad { color: var(--error); }
+.fb-body  { font-size: .88rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ── CONFETTI ────────────────────────────────────────────────── */
+#confetti-layer {
+  display: none; position: fixed; inset: 0; z-index: 200; pointer-events: none;
+}
+#confetti-layer.on { display: block; }
+.cf {
+  position: absolute; border-radius: 3px;
+  animation: cf-fall linear forwards;
+}
+@keyframes cf-fall {
+  0%   { transform: translateY(-10px) rotate(0deg);   opacity: 1; }
+  100% { transform: translateY(105vh)  rotate(540deg); opacity: 0; }
+}
+.celebrate-modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 300; padding: 24px;
+}
+.celebrate-card {
+  background: var(--white); border-radius: 24px; padding: 44px 32px;
+  text-align: center; max-width: 360px; width: 100%;
+  box-shadow: var(--shadow-lg);
+  animation: pop .4s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.celebrate-emoji { font-size: 4rem; margin-bottom: 14px; }
+.celebrate-title { font-size: 1.55rem; font-weight: 800; margin-bottom: 8px; }
+.celebrate-sub { color: var(--text-muted); font-size: .95rem; margin-bottom: 28px; }
+.btn-celebrate-ok {
+  background: var(--primary); color: #fff; padding: 15px 50px;
+  border-radius: 50px; font-size: 1rem; font-weight: 700; min-height: var(--tap);
+}
+
+/* ── DEMO LABEL ─────────────────────────────────────────────── */
+.demo-section-label {
+  font-size: .75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--text-muted); margin: 24px 0 8px 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     WELCOME SCREEN
+════════════════════════════════════════════════════════════ -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-logo">💻</div>
+  <h1 class="welcome-title">AIT Foundation</h1>
+  <p class="welcome-sub">Applied Information Technology · Year 11</p>
+  <button class="btn-start" onclick="nav('course')">Start Learning</button>
+  <p class="welcome-note">Progress saved automatically to this device.</p>
+  <button class="btn-text-sm" onclick="confirmReset()">Reset Progress</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     COURSE HOME
+════════════════════════════════════════════════════════════ -->
+<div id="screen-course" class="screen">
+  <div class="hero">
+    <button class="hero-back" onclick="nav('welcome')">← Home</button>
+    <h1>AIT Foundation Course</h1>
+    <p>Select a unit to begin</p>
+  </div>
+  <div class="cards-grid" id="units-grid"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     UNIT HOME
+════════════════════════════════════════════════════════════ -->
+<div id="screen-unit" class="screen">
+  <div class="hero">
+    <button class="hero-back" onclick="nav('course')">← All Units</button>
+    <h1 id="unit-h1">Unit</h1>
+    <p id="unit-desc"></p>
+  </div>
+  <div class="cards-grid" id="modules-grid"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MODULE HOME
+════════════════════════════════════════════════════════════ -->
+<div id="screen-module" class="screen">
+  <div class="hero" id="module-hero">
+    <button class="hero-back" id="mod-back-btn">← Unit</button>
+    <h1 id="module-h1">Module</h1>
+    <p id="module-meta"></p>
+  </div>
+  <div class="lessons-list" id="lessons-list"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LESSON SCREEN
+════════════════════════════════════════════════════════════ -->
+<div id="screen-lesson" class="screen">
+  <div class="lesson-header" id="lesson-header">
+    <div class="lesson-header-top">
+      <button class="lesson-header-back" id="lesson-back-btn">← Module</button>
+      <h2 id="lesson-title-h">Lesson</h2>
+    </div>
+    <div class="lesson-tabs">
+      <button class="ltab active" id="ltab-learn" onclick="showTab('learn')">📖 Learn</button>
+      <button class="ltab"        id="ltab-tryit" onclick="showTab('tryit')">✏️ Try It</button>
+      <button class="ltab"        id="ltab-check" onclick="showTab('check')">✅ Check</button>
+    </div>
+  </div>
+  <div class="lesson-body" id="lesson-body"></div>
+  <div class="lesson-footer">
+    <button class="btn-nav btn-nav-prev" id="btn-prev" onclick="stepLesson(-1)">← Previous</button>
+    <button class="btn-nav btn-nav-next" id="btn-next" onclick="stepLesson(1)">Next →</button>
+  </div>
+</div>
+
+<!-- confetti layer -->
+<div id="confetti-layer"></div>
+
+<script>
+/*
+╔══════════════════════════════════════════════════════════════╗
+║  AIT FOUNDATION COURSE  —  index.html                       ║
+║  Single-file · Vanilla JS · No build · Works offline        ║
+╠══════════════════════════════════════════════════════════════╣
+║  HOW TO ADD A NEW UNIT                                       ║
+║  ─────────────────────                                       ║
+║  Append an object to COURSE_DATA.units[]:                    ║
+║    { id, number, title, description,                         ║
+║      status: "available",   ← or "coming_soon"              ║
+║      modules: [ ... ] }                                      ║
+║                                                              ║
+║  HOW TO ADD A MODULE                                         ║
+║  ──────────────────                                          ║
+║  Add to parent unit's modules[]:                             ║
+║    { id, code, title, color, lessons: [ ... ] }              ║
+║                                                              ║
+║  HOW TO ADD LESSON CONTENT                                   ║
+║  ─────────────────────────                                   ║
+║  Each lesson: { id, title, estimatedMinutes, parts }         ║
+║  parts: {                                                    ║
+║    learn: [ slide, ... ]     ← rendered by renderLearn()     ║
+║    tryIt: { activityObj }    ← one activity                  ║
+║    check: [ activityObj, … ] ← array of activities          ║
+║  }                                                           ║
+║                                                              ║
+║  SLIDE TYPES (learn[]):                                      ║
+║    { type:"text",  heading, body }                           ║
+║    { type:"image", src, caption }                            ║
+║    { type:"video", src, caption }                            ║
+║                                                              ║
+║  ACTIVITY TYPES (tryIt / check[]):                           ║
+║    multipleChoice · trueFalse · fillBlank · matching         ║
+║    dragDrop · ordering · shortAnswer · hotspot · starRating  ║
+║  → See renderActivity() below for full field reference.      ║
+║                                                              ║
+║  UNLOCK RULES                                                ║
+║  ────────────                                                ║
+║  • Module 0 in each unit always starts unlocked.             ║
+║  • Module N unlocks when module N-1 is completed.            ║
+║  • Lesson 0 in each module unlocks with its module.          ║
+║  • Lesson N unlocks when lesson N-1 is completed.            ║
+║  • A lesson is "completed" when its Check tab is submitted.  ║
+║  • Module completion fires the confetti celebration.         ║
+╚══════════════════════════════════════════════════════════════╝
+*/
+
+// ──────────────────────────────────────────────────────────────
+// COURSE DATA
+// ──────────────────────────────────────────────────────────────
+const COURSE_DATA = {
+  units: [
+    {
+      id: "unit1", number: 1,
+      title: "Digital Systems & Networks",
+      description: "Hardware, software, networks and cybersecurity",
+      status: "coming_soon",
+      modules: []
+    },
+    {
+      id: "unit2", number: 2,
+      title: "Applications in Practice",
+      description: "Spreadsheets, collaboration, publishing and photography",
+      status: "available",
+      modules: [
+        {
+          id: "c11_6", code: "C11.6",
+          title: "Spreadsheets",
+          color: "#028090",
+          lessons: [
+            { id: "c11_6_l1", title: "Introduction to Spreadsheets",    estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_6_l2", title: "Entering and Formatting Data",     estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_6_l3", title: "Basic Formulas and Functions",     estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_6_l4", title: "Charts and Graphs",               estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_6_l5", title: "Spreadsheet Project",             estimatedMinutes: 30, parts: { learn: [], tryIt: {}, check: [] } }
+          ]
+        },
+        {
+          id: "c11_7", code: "C11.7",
+          title: "Social Collaboration",
+          color: "#2F3C7E",
+          lessons: [
+            { id: "c11_7_l1", title: "Introduction to Collaboration Tools", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_7_l2", title: "Working with Cloud Documents",        estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_7_l3", title: "Communication and Sharing",           estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "c11_7_l4", title: "Digital Citizenship Online",          estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } }
+          ]
+        },
+        {
+          id: "e11_2", code: "E11.2",
+          title: "Desktop Publishing",
+          color: "#6D2E46",
+          lessons: [
+            { id: "e11_2_l1", title: "Introduction to Desktop Publishing", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_2_l2", title: "Design Principles",                  estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_2_l3", title: "Working with Text and Images",       estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_2_l4", title: "Creating a Publication",             estimatedMinutes: 30, parts: { learn: [], tryIt: {}, check: [] } }
+          ]
+        },
+        {
+          id: "e11_4", code: "E11.4",
+          title: "Digital Photography",
+          color: "#1E2761",
+          lessons: [
+            { id: "e11_4_l1", title: "Introduction to Digital Photography", estimatedMinutes: 15, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_4_l2", title: "Camera Settings and Techniques",      estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_4_l3", title: "Composition and Lighting",            estimatedMinutes: 20, parts: { learn: [], tryIt: {}, check: [] } },
+            { id: "e11_4_l4", title: "Editing Your Photos",                 estimatedMinutes: 25, parts: { learn: [], tryIt: {}, check: [] } }
+          ]
+        }
+      ]
+    },
+    {
+      id: "unit3", number: 3,
+      title: "Creative Digital Solutions",
+      description: "Web design, multimedia and programming fundamentals",
+      status: "coming_soon",
+      modules: []
+    },
+    {
+      id: "unit4", number: 4,
+      title: "Data and Society",
+      description: "Databases, data analysis and ethical considerations",
+      status: "coming_soon",
+      modules: []
+    }
+  ]
+};
+
+// ──────────────────────────────────────────────────────────────
+// PROGRESS  (localStorage)
+// ──────────────────────────────────────────────────────────────
+const STORAGE_KEY = "ait_progress_v1";
+let P = {};  // live progress object
+
+function loadProgress() {
+  try { P = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); } catch { P = {}; }
+  COURSE_DATA.units.forEach(unit => {
+    if (unit.status !== "available") return;
+    P[unit.id] = P[unit.id] || { modules: {} };
+    unit.modules.forEach((mod, mi) => {
+      P[unit.id].modules[mod.id] = P[unit.id].modules[mod.id] || {
+        status: mi === 0 ? "unlocked" : "locked",
+        lessons: {}
+      };
+      mod.lessons.forEach((les, li) => {
+        P[unit.id].modules[mod.id].lessons[les.id] =
+          P[unit.id].modules[mod.id].lessons[les.id] || {
+            status: (mi === 0 && li === 0) ? "unlocked" : "locked",
+            completed: false, stars: 0
+          };
+      });
+    });
+  });
+  recalcUnlocks();
+  saveProgress();
+}
+
+function saveProgress() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(P)); } catch {}
+}
+
+function confirmReset() {
+  if (!confirm("Reset all progress? This cannot be undone.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  P = {};
+  loadProgress();
+  nav("welcome");
+}
+
+// ──────────────────────────────────────────────────────────────
+// UNLOCK LOGIC
+// ──────────────────────────────────────────────────────────────
+function recalcUnlocks() {
+  COURSE_DATA.units.forEach(unit => {
+    if (unit.status !== "available") return;
+    const up = P[unit.id]; if (!up) return;
+
+    unit.modules.forEach((mod, mi) => {
+      const mp = up.modules[mod.id]; if (!mp) return;
+
+      // unlock module
+      if (mi === 0 && mp.status === "locked") mp.status = "unlocked";
+      if (mi > 0) {
+        const prev = up.modules[unit.modules[mi - 1].id];
+        if (prev && prev.status === "completed" && mp.status === "locked") mp.status = "unlocked";
+      }
+
+      // unlock lessons
+      mod.lessons.forEach((les, li) => {
+        const lp = mp.lessons[les.id]; if (!lp) return;
+        if (li === 0 && mp.status !== "locked" && lp.status === "locked") lp.status = "unlocked";
+        if (li > 0) {
+          const prevL = mp.lessons[mod.lessons[li - 1].id];
+          if (prevL && prevL.completed && lp.status === "locked") lp.status = "unlocked";
+        }
+      });
+
+      // module completion
+      if (mp.status !== "completed" && mod.lessons.length > 0) {
+        const allDone = mod.lessons.every(l => mp.lessons[l.id]?.completed);
+        if (allDone) mp.status = "completed";
+      }
+    });
+  });
+}
+
+function markLessonComplete(unitId, modId, lesId) {
+  const lp = P[unitId]?.modules[modId]?.lessons[lesId]; if (!lp) return;
+  if (lp.completed) return;
+  lp.completed = true; lp.status = "completed";
+  const prevModStatus = P[unitId].modules[modId].status;
+  recalcUnlocks();
+  saveProgress();
+  // fire celebration if module just completed
+  const mp = P[unitId].modules[modId];
+  if (mp.status === "completed" && prevModStatus !== "completed") {
+    const mod = COURSE_DATA.units.find(u => u.id === unitId)?.modules.find(m => m.id === modId);
+    if (mod) celebrate(mod.title, mod.color);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────────────────────
+let curUnit   = null;
+let curModule = null;
+let curLesson = null;
+let curTab    = "learn";
+
+// ──────────────────────────────────────────────────────────────
+// NAVIGATION
+// ──────────────────────────────────────────────────────────────
+function nav(screen) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("screen-" + screen).classList.add("active");
+  window.scrollTo(0, 0);
+  if (screen === "course")  renderCourse();
+  if (screen === "unit")    renderUnit();
+  if (screen === "module")  renderModule();
+}
+
+function openUnit(unitId) {
+  const unit = COURSE_DATA.units.find(u => u.id === unitId);
+  if (!unit || unit.status === "coming_soon") return;
+  curUnit = unit; nav("unit");
+}
+
+function openModule(modId) {
+  const mod = curUnit?.modules.find(m => m.id === modId); if (!mod) return;
+  if (P[curUnit.id]?.modules[modId]?.status === "locked") return;
+  curModule = mod; nav("module");
+}
+
+function openLesson(lesId) {
+  const les = curModule?.lessons.find(l => l.id === lesId); if (!les) return;
+  if (P[curUnit.id]?.modules[curModule.id]?.lessons[lesId]?.status === "locked") return;
+  curLesson = les; renderLesson();
+}
+
+function stepLesson(dir) {
+  const lessons = curModule.lessons;
+  const i = lessons.findIndex(l => l.id === curLesson.id);
+  const ni = i + dir;
+  if (ni < 0 || ni >= lessons.length) { nav("module"); return; }
+  const next = lessons[ni];
+  if (P[curUnit.id]?.modules[curModule.id]?.lessons[next.id]?.status === "locked") {
+    nav("module"); return;
+  }
+  curLesson = next; renderLesson();
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER: COURSE HOME
+// ──────────────────────────────────────────────────────────────
+function renderCourse() {
+  const grid = document.getElementById("units-grid");
+  grid.innerHTML = "";
+  COURSE_DATA.units.forEach(unit => {
+    const coming = unit.status === "coming_soon";
+    const card = el("div", "unit-card" + (coming ? " coming-soon" : ""));
+    if (!coming) card.onclick = () => openUnit(unit.id);
+
+    let bottom = "";
+    if (!coming && P[unit.id]) {
+      const { done, total } = unitProg(unit);
+      const pct = total ? Math.round(done / total * 100) : 0;
+      bottom = `<div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+                <div class="progress-label">${done} of ${total} lessons complete</div>`;
+    } else {
+      bottom = `<span class="badge-soon">Coming Soon</span>`;
+    }
+    card.innerHTML = `<div class="unit-num">Unit ${unit.number}</div>
+      <h3>${unit.title}</h3><p>${unit.description}</p>${bottom}`;
+    grid.appendChild(card);
+  });
+}
+
+function unitProg(unit) {
+  let done = 0, total = 0;
+  unit.modules.forEach(m => m.lessons.forEach(l => {
+    total++;
+    if (P[unit.id]?.modules[m.id]?.lessons[l.id]?.completed) done++;
+  }));
+  return { done, total };
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER: UNIT HOME
+// ──────────────────────────────────────────────────────────────
+function renderUnit() {
+  document.getElementById("unit-h1").textContent = curUnit.title;
+  document.getElementById("unit-desc").textContent = curUnit.description;
+  const grid = document.getElementById("modules-grid");
+  grid.innerHTML = "";
+  curUnit.modules.forEach(mod => {
+    const mp  = P[curUnit.id]?.modules[mod.id];
+    const locked = mp?.status === "locked";
+    const { done, total } = modProg(mod);
+    const pct = total ? Math.round(done / total * 100) : 0;
+    const statusIcon = locked ? "🔒" : mp?.status === "completed" ? "✅" : "📂";
+
+    const card = el("div", "module-card" + (locked ? " locked" : ""));
+    if (!locked) card.onclick = () => openModule(mod.id);
+    card.innerHTML = `
+      <div class="module-card-top" style="background:${mod.color}">
+        <div class="module-code">${mod.code}</div>
+        <h3>${mod.title} <span>${statusIcon}</span></h3>
+      </div>
+      <div class="module-card-body">
+        <div class="module-lesson-ct">${mod.lessons.length} lessons</div>
+        <div class="progress-bar-wrap">
+          <div class="module-progress-fill" style="width:${pct}%;background:${mod.color}"></div>
+        </div>
+        <div class="module-progress-text">${done} of ${total} complete</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function modProg(mod) {
+  let done = 0;
+  mod.lessons.forEach(l => { if (P[curUnit.id]?.modules[mod.id]?.lessons[l.id]?.completed) done++; });
+  return { done, total: mod.lessons.length };
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER: MODULE HOME
+// ──────────────────────────────────────────────────────────────
+function renderModule() {
+  const mod = curModule;
+  document.getElementById("module-hero").style.background = mod.color;
+  document.getElementById("module-h1").textContent = `${mod.code}: ${mod.title}`;
+  document.getElementById("module-meta").textContent = `${mod.lessons.length} lessons`;
+  const backBtn = document.getElementById("mod-back-btn");
+  backBtn.textContent = "← " + curUnit.title;
+  backBtn.onclick = () => nav("unit");
+
+  const list = document.getElementById("lessons-list");
+  list.innerHTML = "";
+  mod.lessons.forEach((les, i) => {
+    const lp = P[curUnit.id]?.modules[mod.id]?.lessons[les.id];
+    const locked = lp?.status === "locked";
+    const done   = lp?.completed;
+    const icon   = locked ? "🔒" : done ? "✅" : "▶";
+
+    const row = el("div", "lesson-row" + (locked ? " locked" : "") + (done ? " done" : ""));
+    if (!locked) row.onclick = () => openLesson(les.id);
+    row.innerHTML = `
+      <div class="lesson-icon">${icon}</div>
+      <div class="lesson-info">
+        <h4>${i + 1}. ${les.title}</h4>
+        <small>~${les.estimatedMinutes} min${locked ? " · complete previous lesson to unlock" : ""}</small>
+      </div>
+      <div class="lesson-arrow">${locked ? "" : "›"}</div>`;
+    list.appendChild(row);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDER: LESSON SCREEN
+// ──────────────────────────────────────────────────────────────
+function renderLesson() {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("screen-lesson").classList.add("active");
+  window.scrollTo(0, 0);
+
+  const mod = curModule;
+  document.getElementById("lesson-header").style.background = mod.color;
+  document.getElementById("lesson-title-h").textContent = curLesson.title;
+  const backBtn = document.getElementById("lesson-back-btn");
+  backBtn.textContent = "← " + mod.title;
+  backBtn.onclick = () => nav("module");
+
+  // prev/next
+  const lessons = mod.lessons;
+  const idx = lessons.findIndex(l => l.id === curLesson.id);
+  document.getElementById("btn-prev").disabled = idx === 0;
+  document.getElementById("btn-next").disabled = idx === lessons.length - 1;
+
+  showTab("learn");
+}
+
+function showTab(tab) {
+  curTab = tab;
+  ["learn","tryit","check"].forEach(t => {
+    document.getElementById("ltab-" + t).classList.toggle("active", t === tab);
+  });
+  renderTab();
+}
+
+function renderTab() {
+  const body = document.getElementById("lesson-body");
+  body.innerHTML = "";
+  if (curTab === "learn")  renderLearn(body);
+  if (curTab === "tryit")  renderTryIt(body);
+  if (curTab === "check")  renderCheck(body);
+}
+
+function renderLearn(body) {
+  const slides = curLesson.parts?.learn || [];
+  if (!slides.length) { body.appendChild(placeholder("📖","Content Coming Soon","Learning slides for this lesson will be added in an upcoming update.")); return; }
+  slides.forEach(slide => {
+    // slide types: text / image / video
+    const card = el("div","act-card");
+    if (slide.type === "text") {
+      card.innerHTML = `${slide.heading ? `<h3 style="margin-bottom:10px">${slide.heading}</h3>` : ""}<p>${slide.body || ""}</p>`;
+    } else if (slide.type === "image") {
+      card.innerHTML = `<img src="${slide.src}" alt="${slide.caption||""}" style="max-width:100%;border-radius:8px"><p style="margin-top:8px;font-size:.88rem;color:var(--text-muted)">${slide.caption||""}</p>`;
+    } else if (slide.type === "video") {
+      card.innerHTML = `<video src="${slide.src}" controls style="max-width:100%;border-radius:8px"></video><p style="margin-top:8px;font-size:.88rem;color:var(--text-muted)">${slide.caption||""}</p>`;
+    }
+    body.appendChild(card);
+  });
+}
+
+function renderTryIt(body) {
+  const tryIt = curLesson.parts?.tryIt;
+  if (!tryIt || !Object.keys(tryIt).length) {
+    body.appendChild(placeholder("✏️","Activity Coming Soon","An interactive practice activity will be added for this lesson."));
+    return;
+  }
+  renderActivity(body, tryIt, "tryit");
+}
+
+function renderCheck(body) {
+  const checks = curLesson.parts?.check || [];
+  if (!checks.length) {
+    body.appendChild(placeholder("✅","Check Coming Soon","Knowledge check questions will be added for this lesson."));
+    return;
+  }
+  let allDone = new Array(checks.length).fill(false);
+  checks.forEach((act, i) => {
+    renderActivity(body, act, "chk" + i, () => {
+      allDone[i] = true;
+      if (allDone.every(Boolean)) markLessonComplete(curUnit.id, curModule.id, curLesson.id);
+    });
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY DISPATCH
+// ──────────────────────────────────────────────────────────────
+function renderActivity(container, data, key, onComplete) {
+  const map = {
+    multipleChoice: actMultipleChoice,
+    trueFalse:      actTrueFalse,
+    fillBlank:      actFillBlank,
+    matching:       actMatching,
+    dragDrop:       actDragDrop,
+    ordering:       actOrdering,
+    shortAnswer:    actShortAnswer,
+    hotspot:        actHotspot,
+    starRating:     actStarRating
+  };
+  (map[data.type] || actMultipleChoice)(container, data, key, onComplete || (() => {}));
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 1 — MULTIPLE CHOICE
+// ──────────────────────────────────────────────────────────────
+function actMultipleChoice(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "multipleChoice",
+    question: "Which application is primarily used to create spreadsheets?",
+    options: [
+      { text: "Microsoft Word",       correct: false },
+      { text: "Microsoft Excel",      correct: true  },
+      { text: "Microsoft PowerPoint", correct: false },
+      { text: "Google Docs",          correct: false }
+    ],
+    explanation: "Microsoft Excel is the dedicated spreadsheet application in the Microsoft Office suite."
+  };
+  const card = el("div","act-card");
+  const letters = ["A","B","C","D","E"];
+  let done = false;
+  card.innerHTML = `<div class="act-q">${d.question}</div><div class="mc-opts" id="mc-${key}"></div><div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const wrap = card.querySelector("#mc-" + key);
+  d.options.forEach((opt, i) => {
+    const btn = el("button","mc-opt");
+    btn.innerHTML = `<span class="mc-letter">${letters[i]}</span>${opt.text}`;
+    btn.onclick = () => {
+      if (done) return; done = true;
+      d.options.forEach((o,j) => wrap.children[j].classList.add(o.correct ? "ok" : "bad"));
+      showFeedback(card.querySelector("#fbx-"+key), opt.correct, d.explanation);
+      if (opt.correct) onDone();
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 2 — TRUE / FALSE
+// ──────────────────────────────────────────────────────────────
+function actTrueFalse(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "trueFalse",
+    question: "A spreadsheet is the best tool for writing a formal letter.",
+    answer: false,
+    explanation: "Word processors (like Word or Google Docs) are designed for writing documents. Spreadsheets are for data and calculations."
+  };
+  const card = el("div","act-card");
+  let done = false;
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div class="tf-opts">
+      <button class="tf-btn" id="tf-t-${key}">✓ True</button>
+      <button class="tf-btn" id="tf-f-${key}">✗ False</button>
+    </div>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const trueBtn  = card.querySelector("#tf-t-" + key);
+  const falseBtn = card.querySelector("#tf-f-" + key);
+  [trueBtn, falseBtn].forEach(btn => {
+    btn.onclick = () => {
+      if (done) return; done = true;
+      const picked = btn === trueBtn;
+      const correct = picked === d.answer;
+      trueBtn .classList.add(d.answer  ? "ok" : "bad");
+      falseBtn.classList.add(!d.answer ? "ok" : "bad");
+      showFeedback(card.querySelector("#fbx-"+key), correct, d.explanation);
+      if (correct) onDone();
+    };
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 3 — FILL IN THE BLANK
+// ──────────────────────────────────────────────────────────────
+function actFillBlank(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "fillBlank",
+    question: "Complete the sentence: The intersection of a row and column in a spreadsheet is called a ___.",
+    answer: "cell",
+    acceptableAnswers: ["cell","a cell"],
+    explanation: "The intersection of a row and column is a cell. Each cell has a unique address like A1 or B3."
+  };
+  const card = el("div","act-card");
+  let done = false;
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <input class="fb-input" id="fbi-${key}" placeholder="Type your answer…" autocomplete="off">
+    <button class="btn-submit" id="fbb-${key}">Check Answer</button>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const input = card.querySelector("#fbi-" + key);
+  const btn   = card.querySelector("#fbb-" + key);
+  const check = () => {
+    if (done) return; done = true;
+    const val = input.value.trim().toLowerCase();
+    const ok  = (d.acceptableAnswers || [d.answer]).map(a => a.toLowerCase()).includes(val);
+    input.classList.add(ok ? "ok" : "bad");
+    btn.disabled = true;
+    showFeedback(card.querySelector("#fbx-"+key), ok, d.explanation);
+    if (ok) onDone();
+  };
+  btn.onclick = check;
+  input.addEventListener("keypress", e => { if (e.key === "Enter") check(); });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 4 — MATCHING
+// ──────────────────────────────────────────────────────────────
+function actMatching(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "matching",
+    question: "Match each spreadsheet term to its definition.",
+    pairs: [
+      { left: "Cell",    right: "Intersection of a row and column" },
+      { left: "Formula", right: "Equation that calculates a value"  },
+      { left: "Column",  right: "Vertical group of cells"           },
+      { left: "Row",     right: "Horizontal group of cells"         }
+    ]
+  };
+  const card = el("div","act-card");
+  // shuffled right column
+  const rights = d.pairs.map((p,i) => ({ text: p.right, pairIdx: i }))
+                         .sort(() => Math.random() - .5);
+  let selLeft = null, selRight = null;
+  const matched = new Set();
+  let done = false;
+
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div style="display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:6px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <div class="match-col-label">Terms</div>
+        <div class="match-col-label">Definitions</div>
+      </div>
+    </div>
+    <div class="match-grid" id="mg-${key}"></div>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+
+  function refresh() {
+    const grid = card.querySelector("#mg-" + key);
+    grid.innerHTML = "";
+    d.pairs.forEach((pair, pi) => {
+      // Left
+      const lb = el("button", "match-item" + (matched.has(pi) ? " done" : "") + (selLeft === pi ? " sel" : ""));
+      lb.textContent = pair.left;
+      lb.onclick = () => {
+        if (done || matched.has(pi)) return;
+        selLeft = selLeft === pi ? null : pi;
+        attempt(); refresh();
+      };
+      grid.appendChild(lb);
+      // Right (from shuffled array, slot pi)
+      const ri = rights[pi];
+      const rb = el("button", "match-item" + (matched.has(ri.pairIdx) ? " done" : "") + (selRight === pi ? " sel" : ""));
+      rb.textContent = ri.text;
+      rb.onclick = () => {
+        if (done || matched.has(ri.pairIdx)) return;
+        selRight = selRight === pi ? null : pi;
+        attempt(); refresh();
+      };
+      grid.appendChild(rb);
+    });
+  }
+
+  function attempt() {
+    if (selLeft === null || selRight === null) return;
+    const correct = rights[selRight].pairIdx === selLeft;
+    if (correct) {
+      matched.add(selLeft);
+      if (matched.size === d.pairs.length && !done) {
+        done = true;
+        showFeedback(card.querySelector("#fbx-"+key), true, "All pairs matched correctly!");
+        onDone();
+      }
+    }
+    selLeft = null; selRight = null;
+  }
+  refresh();
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 5 — DRAG AND DROP  (click-to-place, mobile-friendly)
+// ──────────────────────────────────────────────────────────────
+function actDragDrop(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "dragDrop",
+    question: "Sort each application into the correct category.",
+    items: ["Excel","Word","Google Sheets","Google Docs","Apple Numbers","Apple Pages"],
+    categories: [
+      { label: "Spreadsheet Apps",    accepts: ["Excel","Google Sheets","Apple Numbers"] },
+      { label: "Word Processor Apps", accepts: ["Word","Google Docs","Apple Pages"]      }
+    ]
+  };
+  const card = el("div","act-card");
+  let placed = {};  // item → category label
+  let selItem = null;
+  let submitted = false;
+
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div class="dnd-source"><div class="dnd-chips" id="dnd-src-${key}"></div></div>
+    <div class="dnd-zones" id="dnd-zones-${key}"></div>
+    <button class="btn-submit" id="dnd-btn-${key}">Check Answers</button>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+
+  function refresh() {
+    // source
+    const src = card.querySelector("#dnd-src-" + key);
+    src.innerHTML = "";
+    d.items.filter(it => !placed[it]).forEach(it => {
+      const chip = el("button","dnd-chip" + (selItem === it ? " selected" : ""));
+      chip.textContent = it;
+      chip.onclick = () => { selItem = selItem === it ? null : it; refresh(); };
+      src.appendChild(chip);
+    });
+    // zones
+    const zones = card.querySelector("#dnd-zones-" + key);
+    zones.innerHTML = "";
+    d.categories.forEach(cat => {
+      const zone = el("div","dnd-zone");
+      zone.innerHTML = `<div class="dnd-zone-label">${cat.label}</div><div class="dnd-zone-chips" id="dzc-${key}-${cat.label.replace(/\s/g,'_')}"></div>`;
+      zone.onclick = (e) => {
+        if (!selItem) return;
+        placed[selItem] = cat.label; selItem = null; refresh();
+      };
+      const zchips = zone.querySelector(".dnd-zone-chips");
+      Object.entries(placed).filter(([,c]) => c === cat.label).forEach(([it]) => {
+        const chip = el("button","dnd-placed");
+        chip.innerHTML = `${it} <span>×</span>`;
+        chip.onclick = (e) => { e.stopPropagation(); delete placed[it]; refresh(); };
+        zchips.appendChild(chip);
+      });
+      zones.appendChild(zone);
+    });
+  }
+
+  card.querySelector("#dnd-btn-"+key).onclick = () => {
+    if (submitted) return;
+    if (Object.keys(placed).length < d.items.length) {
+      showFeedback(card.querySelector("#fbx-"+key), false, "Place all items before checking."); return;
+    }
+    let allOk = d.items.every(it => d.categories.find(c => c.label === placed[it])?.accepts.includes(it));
+    submitted = true;
+    showFeedback(card.querySelector("#fbx-"+key), allOk,
+      allOk ? "All items sorted correctly!" : "Some items are in the wrong category — review and try again.");
+    if (allOk) onDone();
+  };
+  refresh();
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 6 — ORDERING
+// ──────────────────────────────────────────────────────────────
+function actOrdering(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "ordering",
+    question: "Put these steps in the correct order to enter a formula in Excel.",
+    items: [
+      { text: "Press Enter to confirm the formula",      order: 4 },
+      { text: "Click the cell where you want the result",order: 1 },
+      { text: "Type = (the equals sign)",                order: 2 },
+      { text: "Type the formula, e.g. SUM(A1:A5)",       order: 3 }
+    ]
+  };
+  const card = el("div","act-card");
+  const items = [...d.items].sort(() => Math.random() - .5);
+  let done = false;
+
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div class="ord-list" id="ord-${key}"></div>
+    <button class="btn-submit" id="ord-btn-${key}">Check Order</button>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+
+  function refresh() {
+    const list = card.querySelector("#ord-" + key);
+    list.innerHTML = "";
+    items.forEach((item, i) => {
+      const row = el("div","ord-item");
+      const upBtn   = i > 0             ? `<button class="ord-btn" id="ord-up-${key}-${i}">▲</button>` : `<span style="width:38px"></span>`;
+      const downBtn = i < items.length-1? `<button class="ord-btn" id="ord-dn-${key}-${i}">▼</button>` : `<span style="width:38px"></span>`;
+      row.innerHTML = `<span class="ord-handle">☰</span><span class="ord-text">${item.text}</span>
+        <div class="ord-btns">${upBtn}${downBtn}</div>`;
+      if (i > 0) row.querySelector("#ord-up-"+key+"-"+i).onclick = () => { if(!done){[items[i],items[i-1]]=[items[i-1],items[i]];refresh();} };
+      if (i < items.length-1) row.querySelector("#ord-dn-"+key+"-"+i).onclick = () => { if(!done){[items[i],items[i+1]]=[items[i+1],items[i]];refresh();} };
+      list.appendChild(row);
+    });
+  }
+
+  card.querySelector("#ord-btn-"+key).onclick = () => {
+    if (done) return; done = true;
+    const ok = items.every((it,i) => it.order === i + 1);
+    const sorted = [...d.items].sort((a,b) => a.order - b.order).map(it => it.text).join(" → ");
+    showFeedback(card.querySelector("#fbx-"+key), ok,
+      ok ? "Perfect order!" : "Not quite. Correct order: " + sorted);
+    if (ok) onDone();
+  };
+  refresh();
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 7 — SHORT ANSWER
+// ──────────────────────────────────────────────────────────────
+function actShortAnswer(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "shortAnswer",
+    question: "In your own words, explain the difference between a formula and a function in a spreadsheet.",
+    promptHint: "Think about how you write each one and what they do.",
+    minWords: 10
+  };
+  const card = el("div","act-card");
+  let submitted = false;
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    ${d.promptHint ? `<div class="act-hint">💡 ${d.promptHint}</div>` : ""}
+    <textarea class="sa-textarea" id="sa-${key}" placeholder="Write your answer here…"></textarea>
+    <div class="sa-word-count" id="sa-wc-${key}">0 words</div>
+    <button class="btn-submit" id="sa-btn-${key}">Submit Answer</button>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const ta  = card.querySelector("#sa-" + key);
+  const wc  = card.querySelector("#sa-wc-" + key);
+  const btn = card.querySelector("#sa-btn-" + key);
+  ta.addEventListener("input", () => {
+    const n = ta.value.trim().split(/\s+/).filter(w => w).length;
+    wc.textContent = n + " word" + (n !== 1 ? "s" : "");
+  });
+  btn.onclick = () => {
+    if (submitted) return;
+    const n = ta.value.trim().split(/\s+/).filter(w => w).length;
+    if (n < (d.minWords || 5)) {
+      showFeedback(card.querySelector("#fbx-"+key), false, `Please write at least ${d.minWords || 5} words.`);
+      return;
+    }
+    submitted = true; ta.readOnly = true; btn.disabled = true;
+    showFeedback(card.querySelector("#fbx-"+key), true, "Answer submitted! Your teacher will review short-answer responses.");
+    onDone();
+  };
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 8 — HOTSPOT
+// ──────────────────────────────────────────────────────────────
+function actHotspot(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "hotspot",
+    question: "Click on each labelled part of the spreadsheet interface.",
+    imageSrc: null,
+    hotspots: [
+      { id: "hs1", label: "Formula Bar",       x: 50, y: 25 },
+      { id: "hs2", label: "Cell Name Box",     x: 10, y: 25 },
+      { id: "hs3", label: "Column Header (A)", x: 12, y: 48 },
+      { id: "hs4", label: "Row Number (1)",    x:  4, y: 58 }
+    ]
+  };
+  const card = el("div","act-card");
+  const found = new Set();
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div class="hotspot-wrap" id="hsw-${key}">
+      ${d.imageSrc
+        ? `<img src="${d.imageSrc}" style="max-width:100%;border-radius:12px;display:block">`
+        : `<div class="hotspot-bg"><span style="font-size:2.5rem">🖥️</span><span>Click the numbered spots</span><small style="opacity:.6">(add imageSrc to lesson data for a real screenshot)</small></div>`}
+    </div>
+    <div class="hs-status" id="hs-status-${key}">Found: 0 of ${d.hotspots.length}</div>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const wrap = card.querySelector("#hsw-" + key);
+  d.hotspots.forEach((spot, i) => {
+    const pt = el("button","hs-point");
+    pt.style.left = spot.x + "%";
+    pt.style.top  = spot.y + "%";
+    pt.textContent = i + 1;
+    pt.title = "Click to identify";
+    pt.onclick = () => {
+      if (found.has(spot.id)) return;
+      found.add(spot.id);
+      pt.classList.add("found"); pt.textContent = "✓"; pt.title = spot.label;
+      card.querySelector("#hs-status-"+key).textContent = `Found: ${found.size} of ${d.hotspots.length} — ${spot.label}`;
+      if (found.size === d.hotspots.length) {
+        showFeedback(card.querySelector("#fbx-"+key), true, "Excellent! You found all the labelled parts.");
+        onDone();
+      }
+    };
+    wrap.appendChild(pt);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// ACTIVITY 9 — STAR RATING
+// ──────────────────────────────────────────────────────────────
+function actStarRating(container, raw, key, onDone) {
+  const d = raw.type ? raw : {
+    type: "starRating",
+    question: "How confident do you feel about this topic?",
+    labels: ["Not at all confident","Slightly confident","Somewhat confident","Mostly confident","Very confident"]
+  };
+  const card = el("div","act-card");
+  let rating = 0; let submitted = false;
+  card.innerHTML = `<div class="act-q">${d.question}</div>
+    <div class="stars-wrap">
+      <div class="stars" id="stars-${key}">
+        ${[1,2,3,4,5].map(n => `<button class="star-btn" data-v="${n}">★</button>`).join("")}
+      </div>
+      <div class="star-label" id="slabel-${key}"></div>
+    </div>
+    <button class="btn-submit" id="star-btn-${key}" disabled>Submit Rating</button>
+    <div id="fbx-${key}"></div>`;
+  container.appendChild(card);
+  const starEls = card.querySelectorAll(".star-btn");
+  const lbl = card.querySelector("#slabel-" + key);
+  const btn = card.querySelector("#star-btn-" + key);
+  function paint(n) { starEls.forEach((s,i) => s.classList.toggle("on", i < n)); }
+  starEls.forEach(s => {
+    s.addEventListener("mouseenter", () => paint(+s.dataset.v));
+    s.addEventListener("mouseleave", () => paint(rating));
+    s.onclick = () => {
+      rating = +s.dataset.v; paint(rating);
+      lbl.textContent = d.labels ? d.labels[rating-1] : rating + " / 5";
+      btn.disabled = false;
+    };
+  });
+  btn.onclick = () => {
+    if (submitted || !rating) return;
+    submitted = true; btn.disabled = true;
+    showFeedback(card.querySelector("#fbx-"+key), true, "Thanks for your rating! Keep practising to build your confidence.");
+    onDone();
+  };
+}
+
+// ──────────────────────────────────────────────────────────────
+// FEEDBACK
+// ──────────────────────────────────────────────────────────────
+function showFeedback(el, ok, explanation) {
+  el.innerHTML = `
+    <div class="feedback ${ok ? "ok" : "bad"}">
+      <div class="fb-icon">${ok ? "✅" : "❌"}</div>
+      <div>
+        <div class="fb-title ${ok ? "ok" : "bad"}">${ok ? "Correct!" : "Not quite."}</div>
+        ${explanation ? `<div class="fb-body">${explanation}</div>` : ""}
+      </div>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────────────────────
+// CONFETTI + CELEBRATION
+// ──────────────────────────────────────────────────────────────
+const CONFETTI_COLORS = ["#028090","#2F3C7E","#6D2E46","#1E2761","#f5c518","#e74c3c","#2ecc71","#3498db","#fff"];
+
+function celebrate(moduleName, color) {
+  fireConfetti();
+  const modal = el("div","celebrate-modal");
+  modal.innerHTML = `
+    <div class="celebrate-card">
+      <div class="celebrate-emoji">🎉</div>
+      <div class="celebrate-title">Module Complete!</div>
+      <div class="celebrate-sub">You finished <strong>${moduleName}</strong>.<br>Fantastic work!</div>
+      <button class="btn-celebrate-ok">Continue</button>
+    </div>`;
+  modal.querySelector("button").onclick = () => { modal.remove(); stopConfetti(); };
+  document.body.appendChild(modal);
+}
+
+function fireConfetti() {
+  const layer = document.getElementById("confetti-layer");
+  layer.innerHTML = ""; layer.classList.add("on");
+  for (let i = 0; i < 90; i++) {
+    const cf = el("div","cf");
+    const size = 7 + Math.random() * 10;
+    cf.style.cssText = `
+      left:${Math.random()*100}vw;
+      width:${size}px; height:${size}px;
+      background:${CONFETTI_COLORS[Math.floor(Math.random()*CONFETTI_COLORS.length)]};
+      animation-duration:${1.4 + Math.random()*2}s;
+      animation-delay:${Math.random()*.8}s;
+      border-radius:${Math.random() > .5 ? "50%" : "3px"};
+    `;
+    layer.appendChild(cf);
+  }
+  setTimeout(stopConfetti, 4500);
+}
+
+function stopConfetti() {
+  const layer = document.getElementById("confetti-layer");
+  layer.classList.remove("on"); layer.innerHTML = "";
+}
+
+// ──────────────────────────────────────────────────────────────
+// DEMO MODE  — open index.html#demo to see all 9 activity types
+// ──────────────────────────────────────────────────────────────
+function runDemo() {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const screen = document.getElementById("screen-lesson");
+  screen.classList.add("active");
+  document.getElementById("lesson-header").style.background = "#028090";
+  document.getElementById("lesson-title-h").textContent = "Activity Components — Demo";
+  const backBtn = document.getElementById("lesson-back-btn");
+  backBtn.textContent = "← Home"; backBtn.onclick = () => { screen.classList.remove("active"); nav("welcome"); };
+  document.getElementById("btn-prev").style.display = "none";
+  document.getElementById("btn-next").style.display = "none";
+  const body = document.getElementById("lesson-body");
+  body.innerHTML = `<h2 style="margin-bottom:4px;color:#028090">All 9 Activity Types</h2>
+    <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:20px">Each rendered with placeholder data. Open index.html#demo to view this screen.</p>`;
+  ["learn","tryit","check"].forEach(t => document.getElementById("ltab-"+t).classList.remove("active"));
+
+  const types = ["multipleChoice","trueFalse","fillBlank","matching","dragDrop","ordering","shortAnswer","hotspot","starRating"];
+  types.forEach((type, i) => {
+    const label = el("div","demo-section-label");
+    label.textContent = (i+1) + ". " + type;
+    body.appendChild(label);
+    renderActivity(body, { type }, "demo"+i);
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// HELPERS
+// ──────────────────────────────────────────────────────────────
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+
+function placeholder(icon, title, text) {
+  const d = el("div","placeholder");
+  d.innerHTML = `<div class="placeholder-icon">${icon}</div><h3>${title}</h3><p>${text}</p>`;
+  return d;
+}
+
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  loadProgress();
+  if (window.location.hash === "#demo") { runDemo(); return; }
+  nav("welcome");
+});
+</script>
+</body>
+</html>
