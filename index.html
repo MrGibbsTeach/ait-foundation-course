@@ -403,6 +403,19 @@ p  { line-height: 1.6; }
   font-size: .75rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: .07em; color: var(--text-muted); margin: 24px 0 8px 2px;
 }
+
+/* ── PRINT ───────────────────────────────────────────────────── */
+@media print {
+  .screen { display: none !important; }
+  #screen-lesson { display: flex !important; flex-direction: column;
+    height: auto !important; overflow: visible !important; }
+  .lesson-header-back, .lesson-tabs, .lesson-footer { display: none !important; }
+  .lesson-body { overflow: visible !important; max-width: 100% !important;
+    padding: 16px !important; }
+  .act-card { break-inside: avoid; box-shadow: none !important;
+    border: 1px solid #ddd !important; margin-bottom: 12px !important; }
+  body { background: #fff !important; }
+}
 </style>
 </head>
 <body>
@@ -414,9 +427,9 @@ p  { line-height: 1.6; }
   <div class="welcome-logo">💻</div>
   <h1 class="welcome-title">AIT Foundation</h1>
   <p class="welcome-sub">Applied Information Technology · Year 11</p>
-  <button class="btn-start" onclick="nav('course')">Start Learning</button>
+  <button class="btn-start" id="btn-start" onclick="nav('course')">Start Learning</button>
   <p class="welcome-note">Progress saved automatically to this device.</p>
-  <button class="btn-text-sm" onclick="confirmReset()">Reset Progress</button>
+  <button class="btn-text-sm" onclick="confirmReset()">Reset my progress</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -429,6 +442,9 @@ p  { line-height: 1.6; }
     <p>Select a unit to begin</p>
   </div>
   <div class="cards-grid" id="units-grid"></div>
+  <p style="text-align:center;padding:4px 0 32px">
+    <button onclick="confirmReset()" style="background:none;border:none;color:#aab;font-size:.8rem;text-decoration:underline;padding:8px;cursor:pointer">Reset my progress</button>
+  </p>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -522,8 +538,10 @@ p  { line-height: 1.6; }
 ║  • Module 0 in each unit always starts unlocked.             ║
 ║  • Module N unlocks when module N-1 is completed.            ║
 ║  • Lesson 0 in each module unlocks with its module.          ║
-║  • Lesson N unlocks when lesson N-1 is completed.            ║
-║  • A lesson is "completed" when its Check tab is submitted.  ║
+║  • Lesson N unlocks when lesson N-1 is completed + stars ≥2. ║
+║  • A lesson completes when all Check questions are answered  ║
+║    AND the star self-rating (added automatically) is done.   ║
+║  • Stars ≥ 2 out of 5 are required to unlock the next lesson.║
 ║  • Module completion fires the confetti celebration.         ║
 ╚══════════════════════════════════════════════════════════════╝
 */
@@ -773,7 +791,7 @@ const COURSE_DATA = {
                       { text: "COUNT",    correct: false },
                       { text: "AVERAGE",  correct: true  }
                     ],
-                    explanation: "AVERAGE adds up all the values and divides by how many there are. That gives the middle value."
+                    explanation: "AVERAGE adds all the values together. Then it divides by how many there are. That gives the average."
                   }
                 ]
               }
@@ -1994,7 +2012,7 @@ function recalcUnlocks() {
         if (li === 0 && mp.status !== "locked" && lp.status === "locked") lp.status = "unlocked";
         if (li > 0) {
           const prevL = mp.lessons[mod.lessons[li - 1].id];
-          if (prevL && prevL.completed && lp.status === "locked") lp.status = "unlocked";
+          if (prevL && prevL.completed && (prevL.stars || 0) >= 2 && lp.status === "locked") lp.status = "unlocked";
         }
       });
 
@@ -2007,10 +2025,11 @@ function recalcUnlocks() {
   });
 }
 
-function markLessonComplete(unitId, modId, lesId) {
+function markLessonComplete(unitId, modId, lesId, stars) {
   const lp = P[unitId]?.modules[modId]?.lessons[lesId]; if (!lp) return;
   if (lp.completed) return;
   lp.completed = true; lp.status = "completed";
+  if (stars) lp.stars = stars;
   const prevModStatus = P[unitId].modules[modId].status;
   recalcUnlocks();
   saveProgress();
@@ -2019,6 +2038,41 @@ function markLessonComplete(unitId, modId, lesId) {
   if (mp.status === "completed" && prevModStatus !== "completed") {
     const mod = COURSE_DATA.units.find(u => u.id === unitId)?.modules.find(m => m.id === modId);
     if (mod) celebrate(mod.title, mod.color);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────
+// WELCOME SCREEN — CONTINUE BUTTON
+// ──────────────────────────────────────────────────────────────
+function findNextLesson() {
+  for (const unit of COURSE_DATA.units) {
+    if (unit.status !== "available") continue;
+    for (const mod of unit.modules) {
+      const mp = P[unit.id]?.modules[mod.id];
+      if (!mp || mp.status === "locked") continue;
+      for (const les of mod.lessons) {
+        const lp = mp.lessons[les.id];
+        if (!lp || lp.status === "locked") continue;
+        if (!lp.completed) return { unit, mod, les };
+      }
+    }
+  }
+  return null;
+}
+
+function updateWelcomeScreen() {
+  const btn = document.getElementById("btn-start");
+  if (!btn) return;
+  const next = findNextLesson();
+  if (next) {
+    btn.textContent = "▶ Continue Learning";
+    btn.onclick = () => {
+      curUnit = next.unit; curModule = next.mod; curLesson = next.les;
+      renderLesson();
+    };
+  } else {
+    btn.textContent = "Start Learning";
+    btn.onclick = () => nav("course");
   }
 }
 
@@ -2037,6 +2091,7 @@ function nav(screen) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById("screen-" + screen).classList.add("active");
   window.scrollTo(0, 0);
+  if (screen === "welcome") updateWelcomeScreen();
   if (screen === "course")  renderCourse();
   if (screen === "unit")    renderUnit();
   if (screen === "module")  renderModule();
@@ -2252,11 +2307,29 @@ function renderCheck(body) {
     return;
   }
   let allDone = new Array(checks.length).fill(false);
+  let starsGiven = 0;
+
+  function tryComplete() {
+    if (allDone.every(Boolean) && starsGiven > 0) {
+      markLessonComplete(curUnit.id, curModule.id, curLesson.id, starsGiven);
+    }
+  }
+
   checks.forEach((act, i) => {
     renderActivity(body, act, "chk" + i, () => {
       allDone[i] = true;
-      if (allDone.every(Boolean)) markLessonComplete(curUnit.id, curModule.id, curLesson.id);
+      tryComplete();
     });
+  });
+
+  // Mandatory self-rating added to every check tab
+  renderActivity(body, {
+    type: "starRating",
+    question: "How confident do you feel about this lesson? ⭐",
+    labels: ["Not confident yet 😟", "Getting there 🙂", "Somewhat confident 😊", "Mostly confident 😄", "Very confident! 🌟"]
+  }, "chk-star", (rating) => {
+    starsGiven = rating;
+    tryComplete();
   });
 }
 
@@ -2306,7 +2379,7 @@ function actMultipleChoice(container, raw, key, onDone) {
       if (done) return; done = true;
       d.options.forEach((o,j) => wrap.children[j].classList.add(o.correct ? "ok" : "bad"));
       showFeedback(card.querySelector("#fbx-"+key), opt.correct, d.explanation);
-      if (opt.correct) onDone();
+      onDone();
     };
     wrap.appendChild(btn);
   });
@@ -2341,7 +2414,7 @@ function actTrueFalse(container, raw, key, onDone) {
       trueBtn .classList.add(d.answer  ? "ok" : "bad");
       falseBtn.classList.add(!d.answer ? "ok" : "bad");
       showFeedback(card.querySelector("#fbx-"+key), correct, d.explanation);
-      if (correct) onDone();
+      onDone();
     };
   });
 }
@@ -2373,7 +2446,7 @@ function actFillBlank(container, raw, key, onDone) {
     input.classList.add(ok ? "ok" : "bad");
     btn.disabled = true;
     showFeedback(card.querySelector("#fbx-"+key), ok, d.explanation);
-    if (ok) onDone();
+    onDone();
   };
   btn.onclick = check;
   input.addEventListener("keypress", e => { if (e.key === "Enter") check(); });
@@ -2519,7 +2592,7 @@ function actDragDrop(container, raw, key, onDone) {
     submitted = true;
     showFeedback(card.querySelector("#fbx-"+key), allOk,
       allOk ? "All items sorted correctly!" : "Some items are in the wrong category — review and try again.");
-    if (allOk) onDone();
+    onDone();
   };
   refresh();
 }
@@ -2569,7 +2642,7 @@ function actOrdering(container, raw, key, onDone) {
     const sorted = [...d.items].sort((a,b) => a.order - b.order).map(it => it.text).join(" → ");
     showFeedback(card.querySelector("#fbx-"+key), ok,
       ok ? "Perfect order!" : "Not quite. Correct order: " + sorted);
-    if (ok) onDone();
+    onDone();
   };
   refresh();
 }
@@ -2698,7 +2771,7 @@ function actStarRating(container, raw, key, onDone) {
     if (submitted || !rating) return;
     submitted = true; btn.disabled = true;
     showFeedback(card.querySelector("#fbx-"+key), true, "Thanks for your rating! Keep practising to build your confidence.");
-    onDone();
+    onDone(rating);
   };
 }
 
