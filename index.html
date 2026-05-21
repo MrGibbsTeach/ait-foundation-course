@@ -398,7 +398,17 @@ p  { line-height: 1.6; }
 @keyframes pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .celebrate-emoji { font-size: 4rem; margin-bottom: 14px; }
 .celebrate-title { font-size: 1.55rem; font-weight: 800; margin-bottom: 8px; }
-.celebrate-sub { color: var(--text-muted); font-size: .95rem; margin-bottom: 28px; }
+.celebrate-sub { color: var(--text-muted); font-size: .95rem; margin-bottom: 16px; }
+.celebrate-next {
+  background: #e8f4ed; border: 1px solid var(--success); border-radius: 10px;
+  padding: 10px 14px; font-size: .88rem; color: var(--text); margin-bottom: 14px;
+}
+.btn-celebrate-next {
+  background: var(--success); color: #fff; padding: 12px 28px;
+  border-radius: 50px; font-size: .95rem; font-weight: 700; min-height: var(--tap);
+  display: block; width: 100%; margin-bottom: 8px;
+}
+.btn-celebrate-dim { color: var(--text-muted); font-size: .88rem; padding: 8px; display: block; width: 100%; }
 .btn-celebrate-ok {
   background: var(--primary); color: #fff; padding: 15px 50px;
   border-radius: 50px; font-size: 1rem; font-weight: 700; min-height: var(--tap);
@@ -463,6 +473,17 @@ p  { line-height: 1.6; }
 .btn-refresh { background: var(--white); border: 2px solid var(--border);
   border-radius: 10px; padding: 9px 18px; font-size: .9rem; font-weight: 600;
   color: var(--text); min-height: 40px; }
+.asp-toggle-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.asp-panel {
+  background: var(--white); border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow); margin-bottom: 18px; border: 1px solid var(--border);
+}
+.asp-info { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+.asp-info code { background: #f0f4f8; padding: 2px 4px; border-radius: 4px; font-size: .72rem; word-break: break-all; display: block; margin-top: 4px; }
+.asp-textarea { width: 100%; font-family: monospace; font-size: .85rem; padding: 10px; border: 1px solid var(--border); border-radius: 8px; resize: vertical; margin-top: 10px; }
+.asp-btns { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.asp-save { background: var(--primary) !important; color: #fff !important; }
+.asp-status { font-size: .82rem; margin-top: 8px; color: var(--text-muted); min-height: 20px; }
 .btn-refresh:hover { border-color: var(--primary); color: var(--primary); }
 
 /* ── PRINT ───────────────────────────────────────────────────── */
@@ -489,6 +510,12 @@ p  { line-height: 1.6; }
   <h1 class="welcome-title">AIT Foundation</h1>
   <p class="welcome-sub">Applied Information Technology · Year 11</p>
   <button class="btn-start" id="btn-start" onclick="nav('course')">Start Learning</button>
+  <div id="welcome-prog" style="display:none;margin-top:20px;width:100%;max-width:300px">
+    <div style="font-size:.82rem;opacity:.65;margin-bottom:6px" id="welcome-prog-text">0 of 17 lessons complete</div>
+    <div style="background:rgba(255,255,255,.2);border-radius:10px;height:8px;overflow:hidden">
+      <div id="welcome-prog-bar" style="height:100%;background:rgba(255,255,255,.85);border-radius:10px;width:0%;transition:width .4s ease"></div>
+    </div>
+  </div>
   <p class="welcome-note" id="welcome-user"></p>
   <button class="btn-text-sm" onclick="confirmReset()">Reset my progress</button>
   <button class="btn-text-sm" onclick="signOut()" style="margin-top:2px">Sign out</button>
@@ -2098,7 +2125,7 @@ function initProgressStructure() {
         P[unit.id].modules[mod.id].lessons[les.id] =
           P[unit.id].modules[mod.id].lessons[les.id] || {
             status: (mi === 0 && li === 0) ? "unlocked" : "locked",
-            completed: false, stars: 0
+            completed: false, stars: 0, tryItAttempted: false
           };
       });
     });
@@ -2181,8 +2208,11 @@ function markLessonComplete(unitId, modId, lesId, stars) {
   // fire celebration if module just completed
   const mp = P[unitId].modules[modId];
   if (mp.status === "completed" && prevModStatus !== "completed") {
-    const mod = COURSE_DATA.units.find(u => u.id === unitId)?.modules.find(m => m.id === modId);
-    if (mod) celebrate(mod.title, mod.color);
+    const unitModules = COURSE_DATA.units.find(u => u.id === unitId)?.modules || [];
+    const mod    = unitModules.find(m => m.id === modId);
+    const modIdx = unitModules.indexOf(mod);
+    const nextMod = unitModules[modIdx + 1] || null;
+    if (mod) celebrate(mod.title, mod.color, nextMod);
   }
 }
 
@@ -2196,6 +2226,11 @@ async function studentLogin() {
   if (!username) return setLoginError("Username can only contain letters, numbers, - and _");
 
   setLoginBusy(true, "student");
+  const { data: allowed } = await sb.from("allowed_usernames").select("username");
+  if (allowed && allowed.length > 0 && !allowed.some(a => a.username === username)) {
+    setLoginError("Username not recognised. Ask your teacher for your username.");
+    setLoginBusy(false, "student"); return;
+  }
   const email = username + "@example.com";
   const pass  = username;
 
@@ -2288,6 +2323,112 @@ function toggleTeacherLogin() {
 }
 
 // ──────────────────────────────────────────────────────────────
+// TEACHER PORTAL HELPERS
+// ──────────────────────────────────────────────────────────────
+let teacherStudentData = [];
+
+const WORD_ADJS  = ["swift","bold","brave","calm","sharp","clear","bright","cool","proud","wise","keen","quick","fair","pure","still"];
+const WORD_NOUNS = ["fox","owl","hawk","wolf","bear","eagle","lion","deer","crane","seal","raven","wren","finch","hare","dove"];
+
+function generateUsernames() {
+  const ta = document.getElementById("asp-names");
+  const existing = ta.value.trim() ? ta.value.trim().split("\n").map(s => s.trim()).filter(Boolean) : [];
+  for (let i = 0; i < 10; i++) {
+    const a   = WORD_ADJS[Math.floor(Math.random() * WORD_ADJS.length)];
+    const n   = WORD_NOUNS[Math.floor(Math.random() * WORD_NOUNS.length)];
+    const num = String(Math.floor(Math.random() * 90) + 10);
+    existing.push(a + n + num);
+  }
+  ta.value = [...new Set(existing)].join("\n");
+}
+
+function copyUsernames() {
+  const ta = document.getElementById("asp-names");
+  const st = document.getElementById("asp-status");
+  navigator.clipboard.writeText(ta.value).then(() => {
+    st.textContent = "Copied to clipboard!";
+    setTimeout(() => { st.textContent = ""; }, 2000);
+  });
+}
+
+async function saveAllowedUsernames() {
+  const names = document.getElementById("asp-names").value.trim().split("\n").map(s => s.trim().toLowerCase()).filter(Boolean);
+  const st    = document.getElementById("asp-status");
+  st.textContent = "Saving…";
+  const { error: delErr } = await sb.from("allowed_usernames").delete().gte("username", "");
+  if (delErr) { st.textContent = "Error: " + delErr.message; return; }
+  if (names.length > 0) {
+    const { error: insErr } = await sb.from("allowed_usernames").insert(names.map(n => ({ username: n })));
+    if (insErr) { st.textContent = "Error: " + insErr.message; return; }
+  }
+  st.textContent = `Saved ${names.length} username${names.length !== 1 ? "s" : ""}!`;
+  setTimeout(() => { st.textContent = ""; }, 3000);
+}
+
+function toggleStudentDetail(studentId) {
+  const det   = document.getElementById("sdetail-" + studentId);
+  const arrow = document.getElementById("arr-" + studentId);
+  if (!det) return;
+  if (det.style.display !== "none") {
+    det.style.display = "none";
+    if (arrow) arrow.textContent = "▶";
+    return;
+  }
+  if (arrow) arrow.textContent = "▼";
+  const entry = teacherStudentData.find(e => e.student.id === studentId);
+  if (!entry) return;
+  const unit2 = COURSE_DATA.units.find(u => u.id === "unit2");
+  const u2p   = entry.pData["unit2"]?.modules || {};
+  let html = `<div style="padding:12px 20px;display:flex;flex-wrap:wrap;gap:20px">`;
+  unit2.modules.forEach(mod => {
+    const mp = u2p[mod.id];
+    html += `<div style="flex:1;min-width:180px">
+      <div style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);margin-bottom:8px">${mod.code}: ${mod.title}</div>`;
+    mod.lessons.forEach(les => {
+      const lp    = mp?.lessons?.[les.id];
+      const done  = lp?.completed;
+      const stars = done && lp?.stars ? " " + "⭐".repeat(lp.stars) : "";
+      const tryIt = lp?.tryItAttempted ? " ✏️" : "";
+      html += `<div style="display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-size:.82rem">
+        <span>${done ? "✅" : "○"}</span>
+        <span style="flex:1">${les.title}</span>
+        <span style="opacity:.7;white-space:nowrap">${stars}${tryIt}</span>
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+  det.children[0].innerHTML = html;
+  det.style.display = "";
+}
+
+function exportCSV() {
+  const unit2  = COURSE_DATA.units.find(u => u.id === "unit2");
+  const total  = unit2.modules.reduce((s, m) => s + m.lessons.length, 0);
+  const heads  = ["Username","Done","Total","Pct","Avg Stars","Last Active",...unit2.modules.map(m => m.code)];
+  const rows   = teacherStudentData.map(({ student, pData, lastActive }) => {
+    const u2p = pData["unit2"]?.modules || {};
+    let done = 0, ts = 0, sc = 0;
+    const modCols = unit2.modules.map(mod => {
+      const mp = u2p[mod.id];
+      const d  = mod.lessons.filter(l => mp?.lessons?.[l.id]?.completed).length;
+      done += d;
+      mod.lessons.forEach(l => { const lp = mp?.lessons?.[l.id]; if (lp?.completed && lp.stars) { ts += lp.stars; sc++; } });
+      return `${d}/${mod.lessons.length}`;
+    });
+    const pct = Math.round(done / total * 100);
+    const avg = sc ? (ts / sc).toFixed(1) : "";
+    const dt  = lastActive ? new Date(lastActive).toLocaleDateString("en-AU") : "";
+    return [student.username?.replace(/@example.com$/, "") || "", done, total, pct + "%", avg, dt, ...modCols];
+  });
+  const csv = [heads, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  a.download = `ait-progress-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+}
+
+// ──────────────────────────────────────────────────────────────
 // TEACHER PORTAL
 // ──────────────────────────────────────────────────────────────
 async function renderTeacherPortal() {
@@ -2296,54 +2437,77 @@ async function renderTeacherPortal() {
   container.innerHTML = '<p style="color:var(--text-muted)">Loading…</p>';
   if (status) status.textContent = "";
 
-  const [{ data: students, error: sErr }, { data: progRows }] = await Promise.all([
+  const [{ data: students, error: sErr }, { data: progRows }, { data: allowedRows }] = await Promise.all([
     sb.from("profiles").select("id, username").eq("role", "student").order("username"),
-    sb.from("progress").select("student_id, data, updated_at")
+    sb.from("progress").select("student_id, data, updated_at"),
+    sb.from("allowed_usernames").select("username").order("username")
   ]);
 
   if (sErr) { container.innerHTML = `<p style="color:var(--error)">Error: ${sErr.message}</p>`; return; }
-  if (!students?.length) { container.innerHTML = '<p style="color:var(--text-muted)">No students have logged in yet.</p>'; return; }
 
   const progMap = {};
   (progRows || []).forEach(r => { progMap[r.student_id] = r; });
 
   const unit2        = COURSE_DATA.units.find(u => u.id === "unit2");
   const totalLessons = unit2.modules.reduce((s, m) => s + m.lessons.length, 0);
+  const colSpan      = 4 + unit2.modules.length;
 
-  let html = `<table class="teacher-table">
+  teacherStudentData = (students || []).map(s => ({
+    student: s, pData: progMap[s.id]?.data || {}, lastActive: progMap[s.id]?.updated_at || null
+  }));
+
+  const allowedTxt = (allowedRows || []).map(r => r.username).join("\n");
+  const toolbarHtml = `
+  <div class="asp-toggle-row">
+    <button class="btn-refresh" onclick="document.getElementById('asp-panel').style.display=document.getElementById('asp-panel').style.display==='none'?'block':'none'">👥 Manage Usernames</button>
+    <button class="btn-refresh" onclick="exportCSV()">⬇ Download CSV</button>
+  </div>
+  <div id="asp-panel" class="asp-panel" style="display:none">
+    <p class="asp-info">Pre-approved usernames — only these can sign in when the list is non-empty. Leave empty to allow any username.
+      <br><strong>One-time SQL (run once in Supabase SQL editor):</strong>
+      <code>CREATE TABLE allowed_usernames (username text PRIMARY KEY); ALTER TABLE allowed_usernames ENABLE ROW LEVEL SECURITY; CREATE POLICY "t" ON allowed_usernames FOR ALL USING (is_teacher()); CREATE POLICY "r" ON allowed_usernames FOR SELECT USING (true);</code>
+    </p>
+    <textarea id="asp-names" rows="7" class="asp-textarea" placeholder="One username per line&#10;e.g. swiftfox42">${allowedTxt}</textarea>
+    <div class="asp-btns">
+      <button class="btn-refresh" onclick="generateUsernames()">+ Generate 10</button>
+      <button class="btn-refresh" onclick="copyUsernames()">Copy All</button>
+      <button class="btn-refresh asp-save" onclick="saveAllowedUsernames()">Save to Supabase</button>
+    </div>
+    <p id="asp-status" class="asp-status"></p>
+  </div>`;
+
+  if (!students?.length) {
+    container.innerHTML = toolbarHtml + '<p style="color:var(--text-muted);margin-top:12px">No students have logged in yet.</p>';
+    return;
+  }
+
+  let html = toolbarHtml + `<table class="teacher-table">
     <thead><tr>
+      <th style="width:24px"></th>
       <th>Username</th>
       <th>Overall</th>
-      ${unit2.modules.map(m => `<th>${m.code}<br><small style="font-weight:400;opacity:.7">${m.lessons.length} lessons</small></th>`).join("")}
-      <th>Avg Stars</th>
+      ${unit2.modules.map(m => `<th>${m.code}<br><small style="font-weight:400;opacity:.7">${m.lessons.length} les</small></th>`).join("")}
+      <th>⭐ Avg</th>
       <th>Last Active</th>
     </tr></thead><tbody>`;
 
-  students.forEach(student => {
-    const pr    = progMap[student.id];
-    const pData = pr?.data || {};
-    const u2p   = pData["unit2"]?.modules || {};
-
+  teacherStudentData.forEach(({ student, pData, lastActive }) => {
+    const u2p = pData["unit2"]?.modules || {};
     let totalDone = 0, totalStars = 0, starCount = 0;
     unit2.modules.forEach(mod => {
       mod.lessons.forEach(les => {
         const lp = u2p[mod.id]?.lessons?.[les.id];
-        if (lp?.completed) {
-          totalDone++;
-          if (lp.stars) { totalStars += lp.stars; starCount++; }
-        }
+        if (lp?.completed) { totalDone++; if (lp.stars) { totalStars += lp.stars; starCount++; } }
       });
     });
+    const pct      = Math.round(totalDone / totalLessons * 100);
+    const avgStars = starCount ? (totalStars / starCount).toFixed(1) : "—";
+    const lastDate = lastActive ? new Date(lastActive).toLocaleDateString("en-AU", { day:"numeric", month:"short" }) : "—";
+    const name     = student.username?.replace(/@example.com$/, "") || "—";
 
-    const pct        = Math.round(totalDone / totalLessons * 100);
-    const avgStars   = starCount ? (totalStars / starCount).toFixed(1) : "—";
-    const lastActive = pr?.updated_at
-      ? new Date(pr.updated_at).toLocaleDateString("en-AU", { day: "numeric", month: "short" })
-      : "—";
-    const displayName = student.username?.replace(/@example.com$/, "") || "—";
-
-    html += `<tr>
-      <td><strong>${displayName}</strong></td>
+    html += `<tr onclick="toggleStudentDetail('${student.id}')" style="cursor:pointer">
+      <td id="arr-${student.id}" style="color:var(--text-muted);font-size:.85rem;padding:11px 8px">▶</td>
+      <td><strong>${name}</strong></td>
       <td>
         <div style="display:flex;align-items:center;gap:8px">
           <div class="t-prog-wrap"><div class="t-prog-bar" style="width:${pct}%"></div></div>
@@ -2361,12 +2525,13 @@ async function renderTeacherPortal() {
     });
 
     html += `<td style="text-align:center">${avgStars !== "—" ? "⭐ " + avgStars : "—"}</td>
-      <td style="font-size:.82rem;color:var(--text-muted)">${lastActive}</td></tr>`;
+      <td style="font-size:.82rem;color:var(--text-muted)">${lastDate}</td></tr>
+    <tr id="sdetail-${student.id}" style="display:none"><td colspan="${colSpan}" style="padding:0;background:#f8fafc"></td></tr>`;
   });
 
   html += "</tbody></table>";
   container.innerHTML = html;
-  if (status) status.textContent = `${students.length} student${students.length !== 1 ? "s" : ""} registered · updated ${new Date().toLocaleTimeString()}`;
+  if (status) status.textContent = `${students.length} student${students.length !== 1 ? "s" : ""} · updated ${new Date().toLocaleTimeString()}`;
 }
 
 // ──────────────────────────────────────────────────────────────
@@ -2406,6 +2571,21 @@ function updateWelcomeScreen() {
       || currentUser.email?.replace(/@example.com$/, "")
       || "";
     userEl.textContent = name ? `Logged in as ${name}` : "Progress saved to your account.";
+  }
+  // Progress bar
+  const progDiv = document.getElementById("welcome-prog");
+  if (progDiv) {
+    const unit2 = COURSE_DATA.units.find(u => u.id === "unit2");
+    const total = unit2.modules.reduce((s, m) => s + m.lessons.length, 0);
+    let done = 0;
+    unit2.modules.forEach(mod => {
+      mod.lessons.forEach(les => {
+        if (P["unit2"]?.modules[mod.id]?.lessons[les.id]?.completed) done++;
+      });
+    });
+    progDiv.style.display = "";
+    document.getElementById("welcome-prog-text").textContent = `${done} of ${total} lessons complete`;
+    document.getElementById("welcome-prog-bar").style.width = Math.round(done / total * 100) + "%";
   }
 }
 
@@ -2641,6 +2821,8 @@ function renderTryIt(body) {
     body.appendChild(placeholder("✏️","Activity Coming Soon","An interactive practice activity will be added for this lesson."));
     return;
   }
+  const lp = P[curUnit?.id]?.modules[curModule?.id]?.lessons[curLesson?.id];
+  if (lp && !lp.tryItAttempted) { lp.tryItAttempted = true; saveProgress(); }
   renderActivity(body, tryIt, "tryit");
 }
 
@@ -3175,17 +3357,37 @@ function showRetry(fbEl, resetFn) {
 // ──────────────────────────────────────────────────────────────
 const CONFETTI_COLORS = ["#028090","#2F3C7E","#6D2E46","#1E2761","#f5c518","#e74c3c","#2ecc71","#3498db","#fff"];
 
-function celebrate(moduleName, color) {
+function celebrate(moduleName, color, nextMod) {
   fireConfetti();
   const modal = el("div","celebrate-modal");
-  modal.innerHTML = `
-    <div class="celebrate-card">
+  let inner;
+  if (nextMod) {
+    inner = `
+      <div class="celebrate-emoji">🎉</div>
+      <div class="celebrate-title">Module Complete!</div>
+      <div class="celebrate-sub">You finished <strong>${moduleName}</strong>.</div>
+      <div class="celebrate-next">Next up: <strong>${nextMod.code}: ${nextMod.title}</strong> is now unlocked!</div>
+      <button class="btn-celebrate-next">Go there →</button>
+      <button class="btn-celebrate-dim">Stay here</button>`;
+  } else {
+    inner = `
       <div class="celebrate-emoji">🎉</div>
       <div class="celebrate-title">Module Complete!</div>
       <div class="celebrate-sub">You finished <strong>${moduleName}</strong>.<br>Fantastic work!</div>
-      <button class="btn-celebrate-ok">Continue</button>
-    </div>`;
-  modal.querySelector("button").onclick = () => { modal.remove(); stopConfetti(); };
+      <button class="btn-celebrate-ok">Continue</button>`;
+  }
+  modal.innerHTML = `<div class="celebrate-card">${inner}</div>`;
+  if (nextMod) {
+    modal.querySelector(".btn-celebrate-next").onclick = () => {
+      modal.remove(); stopConfetti();
+      curUnit   = COURSE_DATA.units.find(u => u.modules.some(m => m.id === nextMod.id));
+      curModule = nextMod;
+      nav("module");
+    };
+    modal.querySelector(".btn-celebrate-dim").onclick = () => { modal.remove(); stopConfetti(); };
+  } else {
+    modal.querySelector(".btn-celebrate-ok").onclick = () => { modal.remove(); stopConfetti(); };
+  }
   document.body.appendChild(modal);
 }
 
